@@ -84,7 +84,7 @@ class Model:
                     self.insertLog(2,username, 'lecture badge succes', None)
                     vRetour = True
                 else : 
-                    self.insertLog(2,username, 'lecture badge failled', None)
+                    self.insertLog(2,username, 'wrong badge', None)
             else : 
                 self.insertLog(2,username, 'error code response : ' + response.status_code, None)
             
