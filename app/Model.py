@@ -71,7 +71,7 @@ class Model:
         print(f'https://www.btssio-carcouet.fr/ppe4/public/badge/{username}/{id}')
         print(username)
         
-        response = requests.get(f'https://www.btssio-carcouet.fr/ppe4/public/badge/{username}/{str(id)}')
+        response = requests.get(f'https://www.btssio-carcouet.fr/ppe4/public/badge/{username}/{str(idBadge)}')
         responseText = response.text
         responseText = responseText.replace("'", "\"")
 
