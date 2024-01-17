@@ -68,7 +68,7 @@ class Model:
         vRetour = False
         print(idBadge)
 
-        print(f'https://www.btssio-carcouet.fr/ppe4/public/badge/{username}/{str(id)}')
+        print(f'https://www.btssio-carcouet.fr/ppe4/public/badge/{username}/{id}')
         print(username)
         
         response = requests.get(f'https://www.btssio-carcouet.fr/ppe4/public/badge/{username}/{str(id)}')
