@@ -68,26 +68,26 @@ class View:
         self.root.mainloop()
 
     def start_rfid_scanning(self):
-        rfid_prompt_window = tk.Toplevel()
-        rfid_prompt_window.title("RFID Scanning Prompt")
+        # rfid_prompt_window = tk.Toplevel()
+        # rfid_prompt_window.title("RFID Scanning Prompt")
 
-        rfid_label = tk.Label(rfid_prompt_window, text="Hold an RFID card near the reader.")
-        rfid_label.pack(pady=10)
+        # rfid_label = tk.Label(rfid_prompt_window, text="Hold an RFID card near the reader.")
+        # rfid_label.pack(pady=10)
 
-        # recup l'id du badge et check via l'api si il est bon
-        try:
-            reader = SimpleMFRC522()
-            rfid_prompt_window.update_idletasks()
-            rfid_prompt_window.update()
+        # # recup l'id du badge et check via l'api si il est bon
+        # try:
+        #     reader = SimpleMFRC522()
+        #     rfid_prompt_window.update_idletasks()
+        #     rfid_prompt_window.update()
 
-            self.idBadge, text = reader.read()
+        #     self.idBadge, text = reader.read()
             self.check_badge()
            
 
-        except Exception as e:
-            messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
-        finally:
-            rfid_prompt_window.destroy()
+        # except Exception as e:
+        #     messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
+        # finally:
+        #     rfid_prompt_window.destroy()
 
 
 
