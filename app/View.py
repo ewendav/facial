@@ -27,7 +27,7 @@ class View:
 
         if self.model.check_badge(self.idBadge, self.username) :
             messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(self.idBadge))
-            self.afterLogin()        else : 
+            self.afterLogin() 
         else:
             messagebox.showerror("RFID Scan Failed", "you don't have the right card")
             
