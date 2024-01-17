@@ -80,7 +80,9 @@ class Model:
 
                 dataResponse = json.loads(responseText)
 
+                print(dataResponse.get('status', False))
                 print(dataResponse)
+                print(dataResponse.status)
 
                 if dataResponse.get('status', False) == True :
                     self.insertLog(2,username, 'lecture badge succes', None)
