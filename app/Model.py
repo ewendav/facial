@@ -62,5 +62,33 @@ class Model:
             self.insertLog(1,username, 'error exception', None)
 
         return vRetour
+    
+
+    def check_badge(self, idBadge, username):
+        vRetour = False
+        
+        response = requests.get(f'https://www.btssio-carcouet.fr/ppe4/public/badge/{username}/{str(id)}')
+        responseText = response.text
+        responseText = responseText.replace("'", "\"")
+
+        try : 
+            if response.status_code == 200:
+
+                dataResponse = json.loads(responseText)
+
+                print(dataResponse)
+
+                if dataResponse.get('id', False) :
+                    self.insertLog(2,username, 'lecture badge succes', None)
+                    vRetour = True
+                else : 
+                    self.insertLog(2,username, 'lecture badge failled', None)
+            else : 
+                self.insertLog(2,username, 'error code response : ' + response.status_code, None)
+            
+        except Exception as e:
+            self.insertLog(1,username, 'error exception', None)
+
+        return vRetour
 
 

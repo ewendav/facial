@@ -12,17 +12,17 @@ class View:
         self.model = Model()
 
     def check_credentials(self):
-        username = self.username_entry.get()
+        self.username = self.username_entry.get()
         password = self.password_entry.get()
 
-        if self.model.check_credentials(username, password) :
+        if self.model.check_credentials(self.username, password) :
             self.start_rfid_scanning()
         else : 
             messagebox.showinfo("Login failled", "wrong username or password" )
 
     def check_badge(self, idBadge):
 
-        if self.model.check_badge(idBadge) :
+        if self.model.check_badge(idBadge, self.username) :
             self.start_rfid_scanning()
         else : 
             messagebox.showinfo("Login failled", "wrong username or password" )
@@ -41,7 +41,7 @@ class View:
             rfid_prompt_window.update()
 
             id, text = reader.read()
-            if self.check_badge(id) : 
+            if self.check_badge(id, self.username) : 
                 messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(id))
             else : 
                 messagebox.showerror("RFID Scan Failed", "you don't have the right error")
