@@ -10,7 +10,10 @@ class View:
     def __init__(self):
         self.tasks = []
         self.model = Model()
-
+    
+    # 
+    # methodes services 
+    #    
     def check_credentials(self):
         self.username = self.username_entry.get()
         password = self.password_entry.get()
@@ -20,37 +23,20 @@ class View:
         else : 
             messagebox.showinfo("Login failled", "wrong username or password" )
 
-    def check_badge(self, idBadge):
+    def check_badge(self):
+        vRetour = False
 
-        if self.model.check_badge(idBadge, self.username) :
-            self.start_rfid_scanning()
+        if self.model.check_badge(self.idBadge, self.username) :
+            vRetour = True
         else : 
             messagebox.showinfo("Login failled", "wrong username or password" )
 
+        return vRetour
 
-    def start_rfid_scanning(self):
-        rfid_prompt_window = tk.Toplevel()
-        rfid_prompt_window.title("RFID Scanning Prompt")
 
-        rfid_label = tk.Label(rfid_prompt_window, text="Hold an RFID card near the reader.")
-        rfid_label.pack(pady=10)
-
-        try:
-            reader = SimpleMFRC522()
-            rfid_prompt_window.update_idletasks()
-            rfid_prompt_window.update()
-
-            id, text = reader.read()
-            if self.check_badge(id, self.username) : 
-                messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(id))
-            else : 
-                messagebox.showerror("RFID Scan Failed", "you don't have the right error")
-
-        except Exception as e:
-            messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
-        finally:
-            rfid_prompt_window.destroy()
-
+    # 
+    # METHODES vues
+    # 
 
     def loginStart(self):        
         # créer fenetre principalle
@@ -75,6 +61,33 @@ class View:
 
         # lance la boucle tinker
         self.root.mainloop()
+
+    def start_rfid_scanning(self):
+        rfid_prompt_window = tk.Toplevel()
+        rfid_prompt_window.title("RFID Scanning Prompt")
+
+        rfid_label = tk.Label(rfid_prompt_window, text="Hold an RFID card near the reader.")
+        rfid_label.pack(pady=10)
+
+        # recup l'id du badge et check via l'apui si il est bon
+        try:
+            reader = SimpleMFRC522()
+            rfid_prompt_window.update_idletasks()
+            rfid_prompt_window.update()
+
+            self.idBadge, text = reader.read()
+            if self.check_badge(id, self.username) : 
+                messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(self.idBadge))
+                self.afterLogin()
+            else : 
+                messagebox.showerror("RFID Scan Failed", "you don't have the right card")
+
+        except Exception as e:
+            messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
+        finally:
+            rfid_prompt_window.destroy()
+
+
 
     def afterLogin(self):
         self.reset_window()
