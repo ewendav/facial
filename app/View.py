@@ -30,11 +30,15 @@ class View:
 
         try:
             reader = SimpleMFRC522()
+            rfid_prompt_window.update_idletasks()
+            rfid_prompt_window.update()
+
             id, text = reader.read()
             messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(id))
         except Exception as e:
             messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
-
+        finally:
+            rfid_prompt_window.destroy()
 
 
     def loginStart(self):        
