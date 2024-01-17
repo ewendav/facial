@@ -86,7 +86,7 @@ class View:
 
 
     def afterLogin(self):
-        self.reset_window()
+        self.root.reset_window()
         new_label = tk.Label(self.root, text="New Content", font=('Helvetica', 16))
         new_label.place(relx=0.5, rely=0.5, anchor="center")
 
