@@ -25,17 +25,23 @@ class View:
 
     def check_badge(self):
 
-        if self.model.check_badge(self.idBadge, self.username) :
-            messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(self.idBadge))
-            self.afterLogin() 
-        else:
-            messagebox.showerror("RFID Scan Failed", "you don't have the right card")
+        self.afterLogin() 
+
+        # if self.model.check_badge(self.idBadge, self.username) :
+        #     messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(self.idBadge))
+        #     self.afterLogin() 
+        # else:
+        #     messagebox.showerror("RFID Scan Failed", "you don't have the right card")
             
 
 
     # 
     # METHODES vues
     # 
+        
+    def destroy_widgets(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
 
     def loginStart(self):        
         # créer fenetre principalle
@@ -86,7 +92,7 @@ class View:
 
 
     def afterLogin(self):
-        self.root.reset_window()
+        self.destroy_widgets()
         new_label = tk.Label(self.root, text="New Content", font=('Helvetica', 16))
         new_label.place(relx=0.5, rely=0.5, anchor="center")
 
