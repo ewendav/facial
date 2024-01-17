@@ -66,7 +66,7 @@ class Model:
 
     def check_badge(self, idBadge, username):
         vRetour = False
-                print('oe')
+        print('oe')
 
         
         response = requests.get(f'https://www.btssio-carcouet.fr/ppe4/public/badge/{username}/{str(id)}')
