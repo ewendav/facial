@@ -82,7 +82,7 @@ class Model:
 
                 print(dataResponse)
 
-                if dataResponse.get('id', False) :
+                if dataResponse.get('status', False) == True :
                     self.insertLog(2,username, 'lecture badge succes', None)
                     vRetour = True
                 else : 
