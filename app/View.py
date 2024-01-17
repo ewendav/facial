@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import messagebox
 from Model import Model
+import RPi.GPIO as GPIO
+from MFRC522_python.mfrc522.SimpleMFRC522 import SimpleMFRC522
+
 
 
 class View:
@@ -13,9 +16,24 @@ class View:
         password = self.password_entry.get()
 
         if self.model.check_credentials(username, password) :
-            messagebox.showinfo("Login Successful", "Welcome, " + username + "!")
+            self.start_rfid_scanning()
         else : 
-            messagebox.showinfo("Login failled", "Bye" )
+            messagebox.showinfo("Login failled", "wrong username or password" )
+
+
+    def start_rfid_scanning(self):
+        rfid_prompt_window = tk.Toplevel()
+        rfid_prompt_window.title("RFID Scanning Prompt")
+
+        rfid_label = tk.Label(rfid_prompt_window, text="Hold an RFID card near the reader.")
+        rfid_label.pack(pady=10)
+
+        try:
+            reader = SimpleMFRC522()
+            id, text = reader.read()
+            messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(id))
+        except Exception as e:
+            messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
 
 
 
