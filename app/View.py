@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from Model import Model
 import RPi.GPIO as GPIO
-from MFRC522_python.mfrc522.SimpleMFRC522 import SimpleMFRC522
+from depedencies.MFRC522_python.mfrc522.SimpleMFRC522 import SimpleMFRC522
 
 
 
