@@ -81,11 +81,10 @@ class Model:
                 dataResponse = json.loads(responseText)
 
                 print(dataResponse.get('status', False))
-                print(dataResponse)
-                print(dataResponse.status)
 
-                if dataResponse.get('status', False) == True :
+                if dataResponse.get('status', False):
                     self.insertLog(2,username, 'lecture badge succes', None)
+                    print(dataResponse)
                     vRetour = True
                 else : 
                     self.insertLog(2,username, 'wrong badge', None)
