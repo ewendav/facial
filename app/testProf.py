@@ -69,7 +69,7 @@ while count < count_max:
     rval = True
     while(not rval):
         # ouvre une fenetre pour le flux caméra
-        (frame) = picam2.capture_array()
+        frame = picam2.capture_array()
         if(not rval):
             print("Problème ouverture caméra. Tentative...")
 
