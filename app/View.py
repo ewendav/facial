@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
+from PIL import Image, ImageTk
+import cv2
 from Model import Model
 import RPi.GPIO as GPIO
 from dependencies.MFRC522_python.mfrc522.SimpleMFRC522 import SimpleMFRC522
-import cv2
-from PIL import Image, ImageTk
 
 
 class View:
