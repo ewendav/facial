@@ -69,6 +69,7 @@ def capture_images_and_train(output_xml_file):
 
     try:
         while images_captured < images_to_capture:
+            print('images captured : ' + images_captured )
             # Capture a frame from the camera
             frame = picam2.capture_array()
 
@@ -115,6 +116,9 @@ def capture_images_and_train(output_xml_file):
     # Save the trained model to an XML file
     model.save(output_xml_file)
 
-if __name__ == "__main__":
-    output_xml_file = 'trained_model.xml'
-    capture_images_and_train(output_xml_file)
+
+
+infirmiereNom = input("nom de l'infirmière")
+
+output_xml_file = infirmiereNom + '_model.xml'
+capture_images_and_train(output_xml_file)
