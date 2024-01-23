@@ -42,8 +42,8 @@
 
 
 import cv2
-import os
 import numpy as np
+from picamera2 import Picamera2
 
 def capture_images_and_train(output_xml_file):
     # Initialize variables
@@ -56,47 +56,55 @@ def capture_images_and_train(output_xml_file):
     face_cascade = cv2.CascadeClassifier('../hash.xml')
 
     # Set up the camera
-    cap = cv2.VideoCapture(0)
+    picam2 = Picamera2()
+    picam2.preview_configuration.main.size = (640, 480)
+    picam2.preview_configuration.main.format = "BGR888"
+    picam2.preview_configuration.align()
+    picam2.configure("preview")
+    picam2.start()
 
     # Capture 30 images for training
     images_to_capture = 30
     images_captured = 0
 
-    while images_captured < images_to_capture:
-        # Read a frame from the camera
-        ret, frame = cap.read()
+    try:
+        while images_captured < images_to_capture:
+            # Capture a frame from the camera
+            frame = picam2.capture_array()
 
-        # Convert the frame to grayscale
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            # Convert the frame to grayscale
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        # Detect faces in the frame
-        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
+            # Detect faces in the frame
+            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
-        for (x, y, w, h) in faces:
-            # Crop the face region
-            face_region = gray[y:y+h, x:x+w]
+            for (x, y, w, h) in faces:
+                # Crop the face region
+                face_region = gray[y:y+h, x:x+w]
 
-            # Resize the face region to a standard size
-            face_region_resized = cv2.resize(face_region, (112, 92))
+                # Resize the face region to a standard size
+                face_region_resized = cv2.resize(face_region, (112, 92))
 
-            # Display the captured face region
-            cv2.imshow('Captured Face', face_region_resized)
+                # Display the captured face region
+                cv2.imshow('Captured Face', face_region_resized)
 
-            # Append the face region to the images list
-            images.append(face_region_resized)
+                # Append the face region to the images list
+                images.append(face_region_resized)
 
-            # Append the label to the labels list
-            labels.append(label_id)
+                # Append the label to the labels list
+                labels.append(label_id)
 
-            images_captured += 1
+                images_captured += 1
 
-        # Break the loop if 'q' is pressed
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+            # Break the loop if 'q' is pressed
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
-    # Release the camera
-    cap.release()
-    cv2.destroyAllWindows()
+    finally:
+        # Release resources
+        cv2.destroyAllWindows()
+        picam2.stop()
+        picam2.close()
 
     # Convert lists to numpy arrays
     (images, labels) = [np.array(lis) for lis in [images, labels]]
