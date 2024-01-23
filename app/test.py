@@ -69,7 +69,7 @@ def capture_images_and_train(output_xml_file):
 
     try:
         while images_captured < images_to_capture:
-            print('images captured : ' + images_captured )
+            print('images captured : ' + str(images_captured) )
             # Capture a frame from the camera
             frame = picam2.capture_array()
 
