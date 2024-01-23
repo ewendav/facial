@@ -164,7 +164,7 @@ def recognize_faces(trained_model_file, frame):
     return frame
 
 def main():
-    trained_model_file = 'trained_model.xml'
+    trained_model_file = 'test_model.xml'
 
     picam2 = Picamera2()
     picam2.preview_configuration.main.size = (1280, 720)
