@@ -135,12 +135,6 @@ def recognize_faces(trained_model_file, frame):
 
     return frame
 
-def main():
-   
-
-if __name__ == "__main__":
-    main()
-
 
 print("1 = prendre photo")
 print("2 = tester model")
