@@ -17,7 +17,7 @@ picamera.start()
 
 while True:
     # Capture a single image
-    frame = picamera.capture(format='rgb')  # Change to "rgb" or "bgr" as needed
+    frame = picamera.capture(format='RGB888')  # Change to "rgb" or "bgr" as needed
 
     # Convert the image from RGB to BGR
     frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
