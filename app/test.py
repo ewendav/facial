@@ -143,46 +143,46 @@ choix = input('choisissez : ')
 while True :
     match choix :
 
-    case 1:
-        infirmiereNom = input("donne nom de l'infirmière : ")
-        output_xml_file = infirmiereNom + '_model.xml'
-        photoEntrainement(output_xml_file)
-        break
+        case 1:
+            infirmiereNom = input("donne nom de l'infirmière : ")
+            output_xml_file = infirmiereNom + '_model.xml'
+            photoEntrainement(output_xml_file)
+            break
 
-    case 2:
-        infirmiereNom = input("donne nom de l'infirmière : ")
-        trained_model_file = infirmiereNom + '_model.xml'
+        case 2:
+            infirmiereNom = input("donne nom de l'infirmière : ")
+            trained_model_file = infirmiereNom + '_model.xml'
 
-            picam2 = Picamera2()
-            picam2.preview_configuration.main.size = (1280, 720)
-            picam2.preview_configuration.main.format = "RGB888"
-            picam2.preview_configuration.align()
-            picam2.configure("preview")
-            picam2.start()
+                picam2 = Picamera2()
+                picam2.preview_configuration.main.size = (1280, 720)
+                picam2.preview_configuration.main.format = "RGB888"
+                picam2.preview_configuration.align()
+                picam2.configure("preview")
+                picam2.start()
 
-            try:
-                while True:
-                    # Capture the camera image
-                    im = picam2.capture_array()
+                try:
+                    while True:
+                        # Capture the camera image
+                        im = picam2.capture_array()
 
-                    # Perform face recognition on the captured frame
-                    im_with_recognition = recognize_faces(trained_model_file, im)
+                        # Perform face recognition on the captured frame
+                        im_with_recognition = recognize_faces(trained_model_file, im)
 
-                    # Display the combined image with both raw camera and face recognition
-                    cv2.imshow("Camera with Face Recognition", im_with_recognition)
+                        # Display the combined image with both raw camera and face recognition
+                        cv2.imshow("Camera with Face Recognition", im_with_recognition)
 
-                    # Break the loop when 'q' is pressed
-                    if cv2.waitKey(1) == ord('q'):
-                        break
+                        # Break the loop when 'q' is pressed
+                        if cv2.waitKey(1) == ord('q'):
+                            break
 
-            finally:
-                # Release resources
-                cv2.destroyAllWindows()
-                picam2.stop()
-                picam2.close()
-                break
+                finally:
+                    # Release resources
+                    cv2.destroyAllWindows()
+                    picam2.stop()
+                    picam2.close()
+                    break
 
-    case _:
-        print('pas compris') 
+        case _:
+            print('pas compris') 
 
 
