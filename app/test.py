@@ -59,7 +59,7 @@ def photoEntrainement(output_xml_file):
     picam2.configure("preview")
     picam2.start()
 
-    images_to_capture = 30
+    images_to_capture = 300
     images_captured = 0
 
     try:
@@ -95,10 +95,6 @@ def photoEntrainement(output_xml_file):
     model.train(images, labels)
 
     model.save(output_xml_file)
-
-
-
-
 
 
 
