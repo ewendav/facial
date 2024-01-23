@@ -13,8 +13,8 @@ picam2.start()
 
 try:
     while True:
+        # Capture the camera image
         im = picam2.capture_array()
-        cv2.imshow("Camera", im)
 
         # Convert the image to grayscale for face detection
         gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
@@ -26,8 +26,8 @@ try:
         for (x, y, w, h) in faces:
             cv2.rectangle(im, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
-        # Display the image with face detection
-        cv2.imshow("Face Detection", im)
+        # Display the combined image with both raw camera and face detection
+        cv2.imshow("Camera with Face Detection", im)
 
         # Break the loop when 'q' is pressed
         if cv2.waitKey(1) == ord('q'):
