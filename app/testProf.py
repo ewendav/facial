@@ -66,12 +66,15 @@ pause = 0
 while count < count_max:
 
     # Boucle en attendant que la caméra soit ok
-    rval = True
+    rval = False
+
     while(not rval):
         # ouvre une fenetre pour le flux caméra
         frame = picam2.capture_array()
         if(not rval):
             print("Problème ouverture caméra. Tentative...")
+        rval = True
+    
 
     # Get image size
     height, width, channels = frame.shape
