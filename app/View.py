@@ -92,13 +92,10 @@ class View:
 
     def afterLogin(self):
         self.destroy_widgets()
-        new_label = tk.Label(self.root, text="New Content", font=('Helvetica', 16))
-        new_label.place(relx=0.5, rely=0.5, anchor="center")
-        
+
         self.videoSource = 'video_source=0'
 
         self.vid = cv2.VideoCapture(self.videoSource)
-
         self.canvas = tk.Canvas(self.root, 
                                 width=self.vid.get(cv2.CAP_PROP_FRAME_WIDTH), 
                                 height=self.vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
