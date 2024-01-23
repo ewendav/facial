@@ -80,4 +80,4 @@ def ReconnaissanceFacial(name): #return true if the face correspond with the nam
         cv2.imshow('OpenCV', frame)
     return retour
 
-ReconnaissanceFacial('test')
+ReconnaissanceFacial('alexis')
