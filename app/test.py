@@ -1,43 +1,40 @@
-from picamera2 import Picamera2
 import cv2
-import numpy as np
+from picamera2 import Picamera2
 
-# Load the pre-trained Haarcascades face detector
+# Load the pre-trained Haar Cascade classifier for face detection
 face_cascade = cv2.CascadeClassifier('../hash.xml')
 
-# Initialize the Picamera2
-picamera = Picamera2()
+picam2 = Picamera2()
+picam2.preview_configuration.main.size = (1280, 720)
+picam2.preview_configuration.main.format = "RGB888"
+picam2.preview_configuration.align()
+picam2.configure("preview")
+picam2.start()
 
-# Set preview configuration
-picamera.preview_configuration.main.size = (640, 480)
-picamera.preview_configuration.main.format = "RGB888"  # Change to "rgb" or "bgr" as needed
-picamera.preview_configuration.align()
-picamera.configure("preview")
-picamera.start()
+try:
+    while True:
+        im = picam2.capture_array()
+        cv2.imshow("Camera", im)
 
-while True:
-    # Capture a single image
-    frame = picamera.capture(format='RGB888')  # Change to "rgb" or "bgr" as needed
+        # Convert the image to grayscale for face detection
+        gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
 
-    # Convert the image from RGB to BGR
-    frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+        # Perform face detection
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
 
-    gray = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2GRAY)  # Convert to gray
-    faces = face_cascade.detectMultiScale(gray,
-                                          scaleFactor=1.2,
-                                          minNeighbors=5,
-                                          minSize=(80, 80))
+        # Draw rectangles around the detected faces
+        for (x, y, w, h) in faces:
+            cv2.rectangle(im, (x, y), (x+w, y+h), (255, 0, 0), 2)
 
-    # Draw a rectangle around the faces
-    for (x, y, w, h) in faces:
-        cv2.rectangle(frame_bgr, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        # Display the image with face detection
+        cv2.imshow("Face Detection", im)
 
-    # Display the resulting frame
-    cv2.imshow('Video', frame_bgr)
+        # Break the loop when 'q' is pressed
+        if cv2.waitKey(1) == ord('q'):
+            break
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-# When everything is done, release the camera
-picamera.stop()
-cv2.destroyAllWindows()
+finally:
+    # Release resources
+    cv2.destroyAllWindows()
+    picam2.stop()
+    picam2.close()
