@@ -9,4 +9,4 @@ picam2.start()
 im= picam2.capture_array()
 cv2.imshow("Camera", im)
 if cv2.waitKey(1)==ord('q'):
-cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
