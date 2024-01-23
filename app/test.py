@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 # Load the pre-trained Haarcascades face detector
-face_cascade = cv2.CascadeClassifier('../hash.xml' + 'haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('../hash.xml')
 
 # Initialize the Picamera2
 picamera = Picamera2()
