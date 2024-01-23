@@ -100,7 +100,7 @@ def photoEntrainement(output_xml_file):
 infirmiereNom = input("nom de l'infirmière")
 
 output_xml_file = infirmiereNom + '_model.xml'
-capture_images_and_train(output_xml_file)
+photoEntrainement(output_xml_file)
 
 
 # import cv2
