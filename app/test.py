@@ -69,7 +69,6 @@ def capture_images_and_train(output_xml_file):
 
     try:
         while images_captured < images_to_capture:
-            print('images captured : ' + str(images_captured) )
             # Capture a frame from the camera
             frame = picam2.capture_array()
 
@@ -100,6 +99,9 @@ def capture_images_and_train(output_xml_file):
             # Break the loop if 'q' is pressed
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+
+            print('images captured : ' + str(images_captured) )
+
 
     finally:
         # Release resources
