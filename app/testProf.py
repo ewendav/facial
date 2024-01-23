@@ -4,7 +4,7 @@ from picamera2 import Picamera2
 import numpy as np
 
 size = 4
-fn_haar = 'haarcascade_frontalface_default.xml'
+fn_haar = '../hash.xml'
 fn_dir = 'Photos'
 count_max = 30
 
