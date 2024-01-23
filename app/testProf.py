@@ -71,11 +71,10 @@ while count < count_max:
     while(not rval):
         # ouvre une fenetre pour le flux caméra
         frame = picam2.capture_array()
+        rval = True
         if(not rval):
             print("Problème ouverture caméra. Tentative...")
-        rval = True
     
-
     # Get image size
     height, width, channels = frame.shape
 
@@ -87,6 +86,8 @@ while count < count_max:
 
     # Scale down for speed
     mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
+
+    print(mini)
 
     # Detect faces
     faces = haar_cascade.detectMultiScale(mini)
