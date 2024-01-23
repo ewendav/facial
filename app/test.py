@@ -138,7 +138,6 @@ def recognize_faces(trained_model_file, frame):
 
 print("1 = prendre photo")
 print("2 = tester model")
-choix = input('choisissez : ')
 while True:
     choix = int(input("Choisissez une option (1, 2, etc.): "))
 
