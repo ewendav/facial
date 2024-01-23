@@ -21,7 +21,7 @@ while True:
     process_this_frame = not process_this_frame
 
 
-   for top, right, bottom, left in face_locations:
+   for (top, right, bottom, left) in face_locations:
         # Scale back up face locations since the frame we detected in was scaled to 1/4 size
         top *= 4
         right *= 4
