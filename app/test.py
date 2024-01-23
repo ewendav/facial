@@ -45,7 +45,7 @@ from picamera2 import Picamera2
 
 
 
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+face_cascade = cv2.CascadeClassifier('../hash.xml' + 'haarcascade_frontalface_default.xml')
 
 # Initialize the PiCamera
 with picamera.PiCamera() as picam:
