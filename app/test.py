@@ -7,7 +7,7 @@ picam2.preview_configuration.align()
 picam2.configure("preview")
 picam2.start()
 
-process_this_frame = true
+process_this_frame = True
 
 while True:
     video_capture = cv2.VideoCapture(0)
