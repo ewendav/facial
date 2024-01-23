@@ -4,7 +4,7 @@ from Model import Model
 import RPi.GPIO as GPIO
 from dependencies.MFRC522_python.mfrc522.SimpleMFRC522 import SimpleMFRC522
 import cv2
-
+from PIL import Image, ImageTk
 
 
 class View:
@@ -26,11 +26,9 @@ class View:
 
     def check_badge(self):
 
-        self.afterLogin() 
-
         # if self.model.check_badge(self.idBadge, self.username) :
         #     messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(self.idBadge))
-        #     self.afterLogin() 
+            self.afterLogin() 
         # else:
         #     messagebox.showerror("RFID Scan Failed", "you don't have the right card")
             
@@ -96,42 +94,24 @@ class View:
         self.destroy_widgets()
         new_label = tk.Label(self.root, text="New Content", font=('Helvetica', 16))
         new_label.place(relx=0.5, rely=0.5, anchor="center")
-
-
-        #  code video
-        face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-        video_capture = cv2.VideoCapture(0)
-
-        while True:
-            if not video_capture.isOpened():
-                print('Unable to load camera.')
-                break
-            
-            # Capture frame-by-frame
-            ret, frame = video_capture.read()
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)      #gray color
-            faces = face_cascade.detectMultiScale(gray,
-                                                scaleFactor=1.2,
-                                                minNeighbors=5,
-                                                minSize=(80, 80)) #face detection in gray image
-
-            # Draw a rectangle around the faces 
-            for (x, y, w, h) in faces:
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (0,255,0), 2)
-            
-            cv2.imshow('Video', frame)
-
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-
-            # Display the resulting frame
-            cv2.imshow('Video', frame)
-
-        # When everything is done, release the capture
-        video_capture.release()
-        cv2.destroyAllWindows()
-
         
+        self.videoSource = 'video_source=0'
+
+        self.vid = cv2.VideoCapture(self.videoSource)
+
+        self.canvas = tk.Canvas(window, 
+                                width=self.vid.get(cv2.CAP_PROP_FRAME_WIDTH), 
+                                height=self.vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        self.canvas.pack()
+        self.update()
+
+
+    def update(self):
+    ret, frame = self.vid.read()
+    if ret:
+        self.photo = ImageTk.PhotoImage(image=Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
+        self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
+    self.root.after(10, self.update)
         
 
         
