@@ -45,57 +45,85 @@ import cv2
 import numpy as np
 from picamera2 import Picamera2
 
-
 def photoEntrainement(output_xml_file):
+    # Initialize three empty lists: one for captured images, one for labels, and one for label IDs
     (images, labels, label_id) = ([], [], 0)
 
+    # Create a LBPH (Local Binary Patterns Histograms) face recognition model
     model = cv2.face.LBPHFaceRecognizer_create()
+
+    # Load the Haar Cascade classifier for face detection
     face_cascade = cv2.CascadeClassifier('../hash.xml')
 
+    # Create an instance of the Picamera2 class for capturing images
     picam2 = Picamera2()
-    picam2.preview_configuration.main.size = (200, 200)
+
+    # Configure the preview settings for the camera (size, format, alignment)
+    picam2.preview_configuration.main.size = (50, 50)
     picam2.preview_configuration.main.format = "BGR888"
     picam2.preview_configuration.align()
     picam2.configure("preview")
+
+    # Start capturing images
     picam2.start()
 
-    images_to_capture = 300
+    # Specify the number of images to capture for training
+    images_to_capture = 100
     images_captured = 0
 
     try:
+        # Continue capturing images until the desired number is reached
         while images_captured < images_to_capture:
+            # Capture a single frame from the camera
             frame = picam2.capture_array()
 
+            # Convert the frame to grayscale
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+            # Detect faces in the grayscale frame
             faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
 
+            # Iterate over detected faces
             for (x, y, w, h) in faces:
+                # Extract the face region from the grayscale frame
                 face_region = gray[y:y+h, x:x+w]
 
+                # Resize the face region to a standard size (120x120)
                 face_region_resized = cv2.resize(face_region, (120, 120))
+
+                # Display the captured face region
                 cv2.imshow('Captured Face', face_region_resized)
+
+                # Append the resized face region to the images list
                 images.append(face_region_resized)
+
+                # Append the label ID to the labels list
                 labels.append(label_id)
+
+                # Increment the count of captured images
                 images_captured += 1
 
             # Break the loop if 'q' is pressed
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-            print('images captured : ' + str(images_captured) )
-
+            # Print the number of images captured
+            print('images captured : ' + str(images_captured))
 
     finally:
+        # Close OpenCV windows and stop the camera when the loop is exited
         cv2.destroyAllWindows()
         picam2.stop()
         picam2.close()
 
+    # Convert lists to NumPy arrays
     (images, labels) = [np.array(lis) for lis in [images, labels]]
 
+    # Train the face recognition model with the captured images and labels
     model.train(images, labels)
 
+    # Save the trained model to an XML file
     model.save(output_xml_file)
-
 
 
 def recognize_faces(trained_model_file, frame):
