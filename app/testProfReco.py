@@ -5,7 +5,7 @@ import numpy
 def ReconnaissanceFacial(name): #return true if the face correspond with the name, else false
     size = 2
     fn_haar = '../hash.xml'
-    fn_dir = 'Entrainement'
+    fn_dir = 'Entrainement/alexis'
     (images, lables, names, id) = ([], [], {}, 0)
     for (subdirs, dirs, files) in os.walk(fn_dir):
         for subdir in dirs:
