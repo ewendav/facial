@@ -99,7 +99,7 @@ class View:
 
         self.vid = cv2.VideoCapture(self.videoSource)
 
-        self.canvas = tk.Canvas(window, 
+        self.canvas = tk.Canvas(self.root, 
                                 width=self.vid.get(cv2.CAP_PROP_FRAME_WIDTH), 
                                 height=self.vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
         self.canvas.pack()
