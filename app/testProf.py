@@ -66,7 +66,7 @@ pause = 0
 while count < count_max:
 
     # Boucle en attendant que la caméra soit ok
-    rval = False
+    rval = True
     while(not rval):
         # ouvre une fenetre pour le flux caméra
         (frame) = picam2.capture_array()
