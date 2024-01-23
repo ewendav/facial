@@ -2,6 +2,7 @@ from picamera2 import Picamera2
 import cv2
 import numpy as np
 import time
+
 # Initialize the Picamera2
 picamera = Picamera2()
 
@@ -22,10 +23,10 @@ try:
     # Capture frames indefinitely
     while True:
         # Capture a single image into the array
-        picamera.capture(image_array, 'rgb')
+        picamera.capture(image_array, 'bgr')  # Change 'rgb' to 'bgr'
 
         # Convert the image to grayscale for face detection
-        gray_image = cv2.cvtColor(image_array, cv2.COLOR_RGB2GRAY)
+        gray_image = cv2.cvtColor(image_array, cv2.COLOR_BGR2GRAY)
 
         # Detect faces in the grayscale image
         faces = face_cascade.detectMultiScale(gray_image, scaleFactor=1.3, minNeighbors=5)
