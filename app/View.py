@@ -107,11 +107,11 @@ class View:
 
 
     def update(self):
-    ret, frame = self.vid.read()
-    if ret:
-        self.photo = ImageTk.PhotoImage(image=Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
-        self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
-    self.root.after(10, self.update)
-        
+        ret, frame = self.vid.read()
+        if ret:
+            self.photo = ImageTk.PhotoImage(image=Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
+            self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
+        self.root.after(10, self.update)
+            
 
         
