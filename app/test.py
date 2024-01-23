@@ -53,7 +53,7 @@ def capture_images_and_train(output_xml_file):
     model = cv2.face.LBPHFaceRecognizer_create()
 
     # Set up the face detector
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    face_cascade = cv2.CascadeClassifier('../hash.xml')
 
     # Set up the camera
     cap = cv2.VideoCapture(0)
