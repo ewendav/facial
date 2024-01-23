@@ -6,7 +6,9 @@ picam2.preview_configuration.main.format = "RGB888"
 picam2.preview_configuration.align()
 picam2.configure("preview")
 picam2.start()
-im= picam2.capture_array()
-cv2.imshow("Camera", im)
-if cv2.waitKey(1)==ord('q'):
-    cv2.destroyAllWindows()
+while True:
+    im= picam2.capture_array()
+    cv2.imshow("Camera", im)
+    if cv2.waitKey(1)==ord('q'):
+        break
+cv2.destroyAllWindows()
