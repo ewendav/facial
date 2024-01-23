@@ -1,34 +1,40 @@
-
+from picamera2 import Picamera2
 import cv2
+import numpy as np
 
-face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-video_capture = cv2.VideoCapture(0)
+# Load the pre-trained Haarcascades face detector
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+# Initialize the Picamera2
+picamera = Picamera2()
+
+# Set preview configuration
+picamera.preview_configuration.main.size = (640, 480)
+picamera.preview_configuration.main.format = "bgr"  # Ensure BGR format
+picamera.preview_configuration.align()
+picamera.configure("preview")
+picamera.start()
 
 while True:
-    if not video_capture.isOpened():
-        print('Unable to load camera.')
-        break
-    
-    # Capture frame-by-frame
-    ret, frame = video_capture.read()
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)      #gray color
+    # Capture a single image
+    frame = picamera.capture(format='bgr')
+
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  # Convert to gray
     faces = face_cascade.detectMultiScale(gray,
                                           scaleFactor=1.2,
                                           minNeighbors=5,
-                                          minSize=(80, 80)) #face detection in gray image
+                                          minSize=(80, 80))
 
     # Draw a rectangle around the faces 
     for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0,255,0), 2)
-    
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+    # Display the resulting frame
     cv2.imshow('Video', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-    # Display the resulting frame
-    cv2.imshow('Video', frame)
-
-# When everything is done, release the capture
-video_capture.release()
+# When everything is done, release the camera
+picamera.stop()
 cv2.destroyAllWindows()
