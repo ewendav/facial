@@ -10,7 +10,7 @@ picamera = Picamera2()
 
 # Set preview configuration
 picamera.preview_configuration.main.size = (640, 480)
-picamera.preview_configuration.main.format = "rgb"  # Change to "rgb" or "bgr" as needed
+picamera.preview_configuration.main.format = "RGB888"  # Change to "rgb" or "bgr" as needed
 picamera.preview_configuration.align()
 picamera.configure("preview")
 picamera.start()
