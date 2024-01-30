@@ -251,7 +251,7 @@ def ReconnaissanceFacial(name):
         # mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
 
         # Detect faces and loop through each one
-        faces = haar_cascade.detectMultiScale(mini)
+        faces = haar_cascade.detectMultiScale(gray)
         for i in range(len(faces)):
             face_i = faces[i]
 
