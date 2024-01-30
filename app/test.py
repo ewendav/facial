@@ -224,7 +224,7 @@ def ReconnaissanceFacial(name):
 
     # Load the pre-trained model
     model = cv2.face.LBPHFaceRecognizer_create()
-    model.read('models/' + name + '_model.xml')
+    model.read( 'models/' + name +'_model.xml')  
     haar_cascade = cv2.CascadeClassifier(fn_haar)
 
     camera = Picamera2()
@@ -238,19 +238,27 @@ def ReconnaissanceFacial(name):
 
     pasReconnu = True
     retour = False
-
+    
     while pasReconnu:
-        frame = camera.capture_array()
+        frame = np.array(camera.capture_array())
 
         frame = np.flip(frame, axis=1)
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
+        # Resize to speed up detection (optional, change size above)
+        size = 2
+        mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
+
         # Detect faces and loop through each one
-        faces = haar_cascade.detectMultiScale(gray)
-        for (x, y, w, h) in faces:
+        faces = haar_cascade.detectMultiScale(mini)
+        for i in range(len(faces)):
+            face_i = faces[i]
+
+            # Coordinates of face after scaling back by `size`
+            (x, y, w, h) = [v * size for v in face_i]
             face = gray[y:y + h, x:x + w]
-            face_resize = cv2.resize(face, (112, 92))  # Adjusted to match the model size
+            face_resize = cv2.resize(face, (112, 92))  
 
             prediction = model.predict(face_resize)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
@@ -270,7 +278,6 @@ def ReconnaissanceFacial(name):
     cv2.destroyAllWindows()
 
     return retour
-
 
 
 
