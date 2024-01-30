@@ -247,8 +247,8 @@ def ReconnaissanceFacial(name):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # Resize to speed up detection (optional, change size above)
-        size = 2
-        mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
+        # size = 2
+        # mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
 
         # Detect faces and loop through each one
         faces = haar_cascade.detectMultiScale(mini)
