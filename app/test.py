@@ -45,10 +45,11 @@ import cv2
 import numpy as np
 from picamera2 import Picamera2
 import os
-from .array import PiRGBArray
 import cv2
 import sys
-sys.path.append('dependencies/picameraFolder/picamera')  
+
+# sys.path.append('dependencies/picameraFolder/picamera')  
+
 from picamera import array
 from array import PiRGBArray
 
