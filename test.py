@@ -1,46 +1,3 @@
-# import cv2
-# from picamera2 import Picamera2
-
-# # Load the pre-trained Haar Cascade classifier for face detection
-# face_cascade = cv2.CascadeClassifier('../hash.xml')
-
-# camera = Picamera2()
-# camera.preview_configuration.main.size = (1280, 720)
-# camera.preview_configuration.main.format = "RGB888"
-# camera.preview_configuration.align()
-# camera.configure("preview")
-# camera.start()
-
-# try:
-#     while True:
-#         # Capture the camera image
-#         im = camera.capture_array()
-
-#         # Convert the image to grayscale for face detection
-#         gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
-
-#         # Perform face detection
-#         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5, minSize=(30, 30))
-
-#         # Draw rectangles around the detected faces
-#         for (x, y, w, h) in faces:
-#             cv2.rectangle(im, (x, y), (x+w, y+h), (255, 0, 0), 2)
-
-#         # Display the combined image with both raw camera and face detection
-#         cv2.imshow("Camera with Face Detection", im)
-
-#         # Break the loop when 'q' is pressed
-#         if cv2.waitKey(1) == ord('q'):
-#             break
-
-# finally:
-#     # Release resources
-#     cv2.destroyAllWindows()
-#     camera.stop()
-#     camera.close()
-
-
-
 import cv2
 import numpy as np
 from picamera2 import Picamera2, Preview
@@ -48,8 +5,6 @@ import os
 import cv2
 import sys
 import time
-
-# sys.path.append('dependencies/picameraFolder/picamera')  
 
 
 def prendsPhotos():
@@ -163,52 +118,49 @@ def prendsPhotos():
 
 
 
-def entrainementPhoto():
-     
+def entrainementPhoto(data_folder, name):
+    # Initialize face recognizer
+    face_recognizer = cv2.face.LBPHFaceRecognizer_create()
+
+    # Get the paths of all images in the data folder
+    image_paths = [os.path.join(data_folder, f) for f in os.listdir(data_folder) if f.endswith('.jpg') or f.endswith('.png')]
+
+    # Create lists to store face samples and corresponding labels
+    face_samples = []
+    labels = []
+
+    # Read images and collect face samples and labels
+    for image_path in image_paths:
+        # Read the image
+        img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
+        # Extract face and label from image path
+        label = int(os.path.split(image_path)[-1].split(".")[0])
+        face_samples.append(img)
+        labels.append(label)
+
+    # Convert lists to NumPy arrays
+    face_samples = np.asarray(face_samples, dtype=np.uint8)
+    labels = np.asarray(labels, dtype=np.int32)
+
+    # Train the face recognizer
+    face_recognizer.train(face_samples, labels)
+
+    # Save the trained model
+    face_recognizer.save("models/" + name + "_model.xml")
+
+    print("Training complete. Model saved as " + name + "_model.xml")
+
+
+
+def ReconnaissanceFacial(name):
     size = 4
     fn_haar = '../hash.xml'
-    fn_dir = 'Photos'
-
-    (images, lables, names, id) = ([], [], {}, 0)
-    for (subdirs, dirs, files) in os.walk(fn_dir):
-        for subdir in dirs:
-            names[id] = subdir
-            subjectpath = os.path.join(fn_dir, subdir)
-            for filename in os.listdir(subjectpath):
-                f_name, f_extension = os.path.splitext(filename)
-                if(f_extension.lower() not in ['.png','.jpg','.jpeg','.gif','.pgm']):
-                    continue
-                path = subjectpath + '/' + filename
-                lable = id
-                images.append(cv2.imread(path, 0))
-                lables.append(int(lable))
-            id += 1
-    (im_width, im_height) = (112, 92)
-    print(images)
-    # Create a Numpy array from the two lists above
-    (images, lables) = [np.array(lis) for lis in [images, lables]]
-
-    model = cv2.face.LBPHFaceRecognizer_create()
-    model.train(images, lables)
-
-    model.save("models/" + 'master' + "_model.xml")
-    print("Training complete. Model overrided as " + 'master' + "_model.xml")
-
-
-
-def ReconnaissanceFacial():
-    size = 4
-    fn_haar = '../hash.xml'
-    folder_path = 'Photos'
     names = {}
 
-    subdirectories = [d for d in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, d))]
-    for label, subdir in enumerate(subdirectories):
-        names[label] = subdir
-    
-
+    # Load the pre-trained model
     model = cv2.face.LBPHFaceRecognizer_create()
-    model.read('models/' + 'master' + '_model.xml')  
+    model.read('models/' + name + '_model.xml')  
 
     (im_width, im_height) = (112, 92)
     haar_cascade = cv2.CascadeClassifier(fn_haar)
@@ -254,21 +206,18 @@ def ReconnaissanceFacial():
 
             # Try to recognize the face
             if prediction[1] < 90:
-                cv2.putText(frame,'%s - %.0f' % (names[prediction[0]],prediction[1]),(x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
+                cv2.putText(frame, f'{prediction[1]:.2f}', (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+
                 # if names[prediction[0]] == name:
                 #     retour = True
                 #     pasReconnu = False
                 #     print(f"Face recognized: {name}")
 
         cv2.imshow('OpenCV', frame)
-
-        key = cv2.waitKey(1)
-        if key != -1:
-            key = key & 0xFF
+        key = cv2.waitKey(1) & 0xFF
         
         if key == 27:
             break
-
 
 
     camera.close()
@@ -281,23 +230,27 @@ def ReconnaissanceFacial():
 
 
 
-while True:
-    print("1 = prendre photo")
-    print('2 = entrainer le model sur les photos')
-    print("3 = tester model")
+# while True:
+#     print("1 = prendre photo")
+#     print("2 = tester model")
 
-    choix = int(input("Choisissez une option (1, 2, 3.): "))
+#     choix = int(input("Choisissez une option (1, 2, etc.): "))
 
-    if choix == 1:
-        prendsPhotos()
-        print('photos prises')
+#     if choix == 1:
+#         name = prendsPhotos()
+#         print('photos prises, entrainement du model en cours')
 
-    elif choix == 2:
-        print('entrainement du model sur toutes les dossier de Photos ')
-        entrainementPhoto()
+#         cheminPhotos = 'Photos/' + name
 
-    elif choix == 3:
-        ReconnaissanceFacial()
+#         entrainementPhoto(cheminPhotos, name)
 
-    else:
-        print('Option non reconnue. Essayez à nouveau.')
+#         break
+
+#     elif choix == 2:
+#         infirmiereNom = input("Donnez le nom de l'infirmière : ")
+#         trained_model_file = infirmiereNom + '_model.xml'
+
+#         ReconnaissanceFacial(infirmiereNom)
+
+#     else:
+#         print('Option non reconnue. Essayez à nouveau.')

@@ -3,6 +3,7 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 import cv2
 from Model import Model
+from Camera import Camera
 import RPi.GPIO as GPIO
 from dependencies.MFRC522_python.mfrc522.SimpleMFRC522 import SimpleMFRC522
 
@@ -11,6 +12,7 @@ class View:
     def __init__(self):
         self.tasks = []
         self.model = Model()
+        self.camera = Camera()
     
     # 
     # methodes services 
@@ -28,7 +30,7 @@ class View:
 
         # if self.model.check_badge(self.idBadge, self.username) :
         #     messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(self.idBadge))
-            self.afterLogin() 
+            self.afterPreLogin() 
         # else:
         #     messagebox.showerror("RFID Scan Failed", "you don't have the right card")
             
@@ -90,17 +92,14 @@ class View:
 
 
 
-    def afterLogin(self):
+    def afterPreLogin(self):
         self.destroy_widgets()
+        camera_prompt_window = tk.Toplevel()
+        camera_prompt_window.title("facial recognition")
+        camera_label = tk.Label(camera_prompt_window, text="met toi bien.")
+        camera_label.pack(pady=10)
 
-        self.videoSource = 'video_source=0'
-
-        self.vid = cv2.VideoCapture(self.videoSource)
-        self.canvas = tk.Canvas(self.root, 
-                                width=self.vid.get(cv2.CAP_PROP_FRAME_WIDTH), 
-                                height=self.vid.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        self.canvas.pack()
-        self.update()
+        self.camera.ReconnaissanceFacial(self.username)
 
 
     def update(self):
