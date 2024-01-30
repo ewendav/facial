@@ -45,8 +45,7 @@ import cv2
 import numpy as np
 from picamera2 import Picamera2
 import os
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+from picamera2.array import PiRGBArray
 import cv2
 import sys
 
@@ -83,7 +82,7 @@ def photoEntrainement(output_xml_file):
     haar_cascade = cv2.CascadeClassifier(fn_haar)
 
     # Create the PiCamera object
-    camera = PiCamera()
+    camera = PiCamera2()
     camera.resolution = (640, 480)
     rawCapture = PiRGBArray(camera, size=(640, 480))
 
