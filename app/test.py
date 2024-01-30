@@ -199,9 +199,14 @@ def entrainementPhoto():
 def ReconnaissanceFacial():
     size = 4
     fn_haar = '../hash.xml'
+    foler_path = 'Photos'
     names = {}
 
-    # Load the pre-trained model
+    subdirectories = [d for d in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, d))]
+    for label, subdir in enumerate(subdirectories):
+        names[label] = subdir
+    
+
     model = cv2.face.LBPHFaceRecognizer_create()
     model.read('models/' + 'master' + '_model.xml')  
 
