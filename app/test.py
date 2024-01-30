@@ -43,7 +43,7 @@
 
 import cv2
 import numpy as np
-from picamera2 import Picamera2
+from picamera2 import PiCamera2
 import os
 import cv2
 import sys
@@ -84,12 +84,90 @@ def photoEntrainement():
     haar_cascade = cv2.CascadeClassifier(fn_haar)
 
     # Create the PiCamera2 object
-    camera = Picamera2()
+    camera = PiCamera2()
     camera.resolution = (640, 480)
 
     pin = sorted([int(n[:n.find('.')]) for n in os.listdir(path) if n[0] != '.'] + [0])[-1] + 1
 
-    print("\n\033[94mLe programme va enregistr
+    print("\n\033[94mLe programme va enregistrer " + str(count_max) + " photos. \
+    Veuillez bouger la tête pour prendre des photos de face différenciées.\033[0m\n")
+
+    count = 0
+    pause = 0
+
+    while True:
+        frame = None
+        try:
+            # Capture a frame
+            frame = camera.capture(format="bgr", use_video_port=True)
+        except KeyboardInterrupt:
+            break
+        except Exception as e:
+            print(f"Error capturing frame: {e}")
+            continue
+
+        # Get the NumPy array representing the image
+        frame = frame.array
+
+        # Get image size
+        height, width, channels = frame.shape
+
+        # Flip frame
+        frame = cv2.flip(frame, 1, 0)
+
+        # Convert to grayscale
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        # Scale down for speed
+        mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
+
+        # Detect faces
+        faces = haar_cascade.detectMultiScale(mini)
+
+        # We only consider the largest face
+        faces = sorted(faces, key=lambda x: x[3])
+        if faces:
+            face_i = faces[0]
+            (x, y, w, h) = [v * size for v in face_i]
+
+            face = gray[y:y + h, x:x + w]
+            face_resize = cv2.resize(face, (im_width, im_height))
+
+            # Draw a rectangle and write the identifier
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+            cv2.putText(frame, fn_name, (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+
+            # Do not consider faces that are too small
+            if (w * 6 < width or h * 6 < height):
+                print("Face trop petite")
+            else:
+                # To create diversity, only save every fifth detected image
+                if (pause == 0):
+                    print("Sauvegarde de la photo " + str(count + 1) + "/" + str(count_max))
+
+                    # Save image file
+                    cv2.imwrite('%s/%s.png' % (path, pin), face_resize)
+
+                    pin += 1
+                    count += 1
+                    pause = 1
+
+        if (pause > 0):
+            pause = (pause + 1) % 5
+
+        cv2.imshow('OpenCV', frame)
+        key = cv2.waitKey(1) & 0xFF
+
+        # If the 'Esc' key is pressed, break from the loop
+        if key == 27:
+            break
+
+    # Release the camera resources
+    camera.close()
+    cv2.destroyAllWindows()
+
+
+
 
 
 
