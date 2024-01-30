@@ -238,8 +238,7 @@ def ReconnaissanceFacial(name):
     
     while pasReconnu:
 
-        try :
-            frame = camera.capture_array("main")
+        frame = camera.capture_array("main")
 
         height, width, channels = frame.shape
         frame = np.flip(frame, axis=1)
