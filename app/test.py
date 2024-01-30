@@ -208,7 +208,7 @@ def entrainementPhoto(data_folder, name):
     face_recognizer.train(face_samples, labels)
 
     # Save the trained model
-    face_recognizer.save(name + "_model.xml")
+    face_recognizer.save("models/" + name + "_model.xml")
 
     print("Training complete. Model saved as " + name + "_model.xml")
 
@@ -216,41 +216,65 @@ def entrainementPhoto(data_folder, name):
 
 
 
+def ReconnaissanceFacial(name):
+    size = 2
+    fn_haar = '../haarcascade_frontalface_default.xml'
 
+    # Create a dictionary to map label ids to names
+    names = {}
 
-
-def recognize_faces(trained_model_file, frame):
-    # Load the trained face recognition model
+    # Load the pre-trained model
     model = cv2.face.LBPHFaceRecognizer_create()
-    model.read(trained_model_file)
+    model.read( 'models/' + name +'_model.xml')  
 
-    # Convert the frame to grayscale
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    haar_cascade = cv2.CascadeClassifier(fn_haar)
+    cam = cv2.VideoCapture(0)
 
-    # Set up the face detector
-    face_cascade = cv2.CascadeClassifier('../hash.xml')
+    pasReconnu = True
+    retour = False
 
-    # Detect faces in the frame
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
+    while pasReconnu:
+        ret, frame = cam.read()
 
-    for (x, y, w, h) in faces:
-        # Crop the face region
-        face_region = gray[y:y+h, x:x+w]
+        # Flip the image (optional)
+        frame = cv2.flip(frame, 1, 0)
 
-        # Resize the face region to a standard size
-        face_region_resized = cv2.resize(face_region, (112, 92))
+        # Convert to grayscale
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        # Recognize the face using the trained model
-        label, confidence = model.predict(face_region_resized)
+        # Resize to speed up detection (optional, change size above)
+        mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
 
-        # Draw a rectangle around the face
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        # Detect faces and loop through each one
+        faces = haar_cascade.detectMultiScale(mini)
+        for i in range(len(faces)):
+            face_i = faces[i]
 
-        # Display the recognized name and confidence level
-        recognized_name = f"Person {label} ({confidence:.2f})"
-        cv2.putText(frame, recognized_name, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+            # Coordinates of face after scaling back by `size`
+            (x, y, w, h) = [v * size for v in face_i]
+            face = gray[y:y + h, x:x + w]
+            face_resize = cv2.resize(face, (112, 92))  # Adjusted to match the model size
 
-    return frame
+            prediction = model.predict(face_resize)
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+
+            # Try to recognize the face
+            if prediction[1] < 90:
+                cv2.putText(frame, '%s - %.0f' % (names[prediction[0]], prediction[1]), (x - 10, y - 10),
+                            cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+                if names[prediction[0]] == name:
+                    retour = True
+                    pasReconnu = False
+                    print(f"Face recognized: {name}")
+
+        cv2.imshow('OpenCV', frame)
+
+    cam.release()
+    cv2.destroyAllWindows()
+
+    return retour
+
+
 
 
 
@@ -275,34 +299,7 @@ while True:
         infirmiereNom = input("Donnez le nom de l'infirmière : ")
         trained_model_file = infirmiereNom + '_model.xml'
 
-        camera = Picamera2()
-        camera.preview_configuration.main.size = (1280, 720)
-        camera.preview_configuration.main.format = "RGB888"
-        camera.preview_configuration.align()
-        camera.configure("preview")
-        camera.start()
-
-        try:
-            while True:
-                # Capture the camera image
-                im = camera.capture_array()
-
-                # Perform face recognition on the captured frame
-                im_with_recognition = recognize_faces(trained_model_file, im)
-
-                # Display the combined image with both raw camera and face recognition
-                cv2.imshow("Camera with Face Recognition", im_with_recognition)
-
-                # Break the loop when 'q' is pressed
-                if cv2.waitKey(1) == ord('q'):
-                    break
-
-        finally:
-            # Release resources
-            cv2.destroyAllWindows()
-            camera.stop()
-            camera.close()
-            break
+        ReconnaissanceFacial(infirmiereNom)
 
     else:
         print('Option non reconnue. Essayez à nouveau.')
