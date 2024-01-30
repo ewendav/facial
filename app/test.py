@@ -233,9 +233,6 @@ def ReconnaissanceFacial(name):
             print(f"Error capturing frame: {e}")
             continue
 
-        cv2.imshow('OpenCV', frame)
-
-
         height, width, channels = frame.shape
         frame = cv2.flip(frame, 1, 0)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -257,14 +254,15 @@ def ReconnaissanceFacial(name):
 
             # Try to recognize the face
             if prediction[1] < 90:
-                cv2.putText(frame, prediction[1], (x - 10, y - 10),
-                            cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+                cv2.putText(frame, f'{prediction[1]:.2f}', (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+
                 if names[prediction[0]] == name:
                     retour = True
                     pasReconnu = False
                     print(f"Face recognized: {name}")
 
-
+        cv2.imshow('OpenCV', frame)
+        
 
 
     camera.close()
