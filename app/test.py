@@ -267,7 +267,6 @@ def ReconnaissanceFacial(name):
                     retour = True
                     pasReconnu = False
                     print(f"Face recognized: {name}")
-        os.remove("temp.jpg")
 
 
         cv2.imshow('OpenCV', frame)
