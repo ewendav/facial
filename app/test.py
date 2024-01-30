@@ -217,7 +217,6 @@ def entrainementPhoto(data_folder, name):
 
 
 def ReconnaissanceFacial(name):
-    size = 2
     fn_haar = '../haarcascade_frontalface_default.xml'
 
     # Create a dictionary to map label ids to names
@@ -243,13 +242,12 @@ def ReconnaissanceFacial(name):
     while pasReconnu:
         frame = camera.capture_array()
 
-        # Flip the image (optional)
-        frame = cv2.flip(frame, 1, 0)
+        frame = np.flip(frame, axis=1)
 
-        # Convert to grayscale
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         # Resize to speed up detection (optional, change size above)
+        size = 2
         mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
 
         # Detect faces and loop through each one
