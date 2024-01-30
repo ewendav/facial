@@ -45,7 +45,7 @@ import cv2
 import numpy as np
 from picamera2 import Picamera2
 import os
-from picamera.array import PiRGBArray
+from picameraB/picamera/array import PiRGBArray
 import cv2
 import sys
 
