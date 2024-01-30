@@ -94,14 +94,10 @@ class View:
 
     def afterPreLogin(self):
         self.destroy_widgets()
-        camera_prompt_window = tk.Toplevel()
-        camera_prompt_window.title("facial recognition")
-        camera_label = tk.Label(camera_prompt_window, text="30 secondes pour reconnaissance faciale.")
-        camera_label.pack(pady=10)
-
         result = self.camera.ReconnaissanceFacial(self.username)
 
-        if result:             
+        if result:   
+            self.destroy_widgets()          
             messagebox.showinfo("LOGIN SUCCESFULL")
              
 
