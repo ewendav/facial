@@ -231,9 +231,6 @@ def ReconnaissanceFacial(name):
     camera.resolution = (640, 480)
     camera_config = camera.create_still_configuration(main={"size": (1920, 1080)}, lores={"size": (640, 480)}, display="lores")
     camera.configure(camera_config)
-
-    camera.preview_configuration.main.format = "RGB888"
-    camera.preview_configuration.align()
     camera.start()
 
     pasReconnu = True
