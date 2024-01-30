@@ -207,8 +207,8 @@ def ReconnaissanceFacial(name):
     names = {}
 
     # Load the pre-trained model
-    # model = cv2.face.LBPHFaceRecognizer_create()
-    # model.read('models/' + name + '_model.xml')  
+    model = cv2.face.LBPHFaceRecognizer_create()
+    model.read('models/' + name + '_model.xml')  
 
     (im_width, im_height) = (112, 92)
     haar_cascade = cv2.CascadeClassifier(fn_haar)
