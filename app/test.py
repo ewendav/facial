@@ -43,7 +43,7 @@
 
 import cv2
 import numpy as np
-from picamera2 import PiCamera2
+from picamera2 import Picamera2
 import os
 import cv2
 import sys
