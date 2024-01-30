@@ -249,8 +249,10 @@ def ReconnaissanceFacial(name):
         # Detect faces and loop through each one
         faces = haar_cascade.detectMultiScale(mini)
 
-        if faces:
-            for i in range(len(faces)):
+        for i in range(len(faces)):
+
+            if i:
+
                 face_i = faces[i]
 
                 # Coordinates of face after scaling back by `size`
