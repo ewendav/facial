@@ -45,9 +45,12 @@ import cv2
 import numpy as np
 from picamera2 import Picamera2
 import os
-from dependencies.picameraFolder.picamera.array import PiRGBArray
+from .array import PiRGBArray
 import cv2
 import sys
+sys.path.append('dependencies/picameraFolder/picamera')  
+from picamera import array
+from array import PiRGBArray
 
 def photoEntrainement(output_xml_file):
 
