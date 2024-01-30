@@ -98,7 +98,7 @@ def prendsPhotos():
     pause = 0
     camera.start()
 
-    while count < count_max1:
+    while count < int(count_max1):
         frame = None
         try:
             # Capture a frame
