@@ -221,7 +221,7 @@ class Camera :
                             print(f"Face recognized: {name}")
                     
             cv2.namedWindow('facial recognition', cv2.WINDOW_NORMAL)
-            cv2.resizeWindow('facial recognition', 400, 300)  
+            cv2.resizeWindow('facial recognition', 500, 500)  
             cv2.imshow('facial recognition', frame)
 
             key = cv2.waitKey(1)
