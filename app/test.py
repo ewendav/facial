@@ -240,7 +240,9 @@ def ReconnaissanceFacial(name):
     retour = False
     
     while pasReconnu:
-        frame = np.array(camera.capture_array())
+        camera.capture_file("temp.jpg")
+
+        frame = cv2.imread("temp.jpg")
 
         frame = np.flip(frame, axis=1)
 
@@ -271,6 +273,8 @@ def ReconnaissanceFacial(name):
                     retour = True
                     pasReconnu = False
                     print(f"Face recognized: {name}")
+        os.remove("temp.jpg")
+
 
         cv2.imshow('OpenCV', frame)
 
