@@ -98,7 +98,7 @@ class View:
 
         if result:   
             self.destroy_widgets()          
-            messagebox.showinfo("LOGIN SUCCESFULL")
+            messagebox.showinfo("LOGIN SUCCESFULL","LOGIN SUCCESFULL")
              
 
 
