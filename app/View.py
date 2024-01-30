@@ -96,10 +96,14 @@ class View:
         self.destroy_widgets()
         camera_prompt_window = tk.Toplevel()
         camera_prompt_window.title("facial recognition")
-        camera_label = tk.Label(camera_prompt_window, text="met toi bien.")
+        camera_label = tk.Label(camera_prompt_window, text="30 secondes pour reconnaissance faciale.")
         camera_label.pack(pady=10)
 
-        self.camera.ReconnaissanceFacial(self.username)
+        result = self.camera.ReconnaissanceFacial(self.username)
+
+        if result:             
+            messagebox.showinfo("LOGIN SUCCESFULL")
+             
 
 
     def update(self):
