@@ -107,7 +107,9 @@ class Camera :
             if (pause > 0):
                 pause = (pause + 1) % 5
 
-            cv2.imshow('OpenCV', frame)
+            cv2.namedWindow('facial recognition', cv2.WINDOW_NORMAL)
+            cv2.resizeWindow('facial recognition', 400, 300)  
+            cv2.imshow('facial recognition', frame)
             key = cv2.waitKey(1) & 0xFF
 
             # If the 'Esc' key is pressed, break from the loop
@@ -218,7 +220,9 @@ class Camera :
                             pasReconnu = False
                             print(f"Face recognized: {name}")
                     
-            cv2.imshow('OpenCV', frame)
+            cv2.namedWindow('facial recognition', cv2.WINDOW_NORMAL)
+            cv2.resizeWindow('facial recognition', 400, 300)  
+            cv2.imshow('facial recognition', frame)
 
             key = cv2.waitKey(1)
             if key != -1:
