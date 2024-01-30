@@ -226,7 +226,7 @@ def ReconnaissanceFacial(name):
         frame = None
 
         try:
-            frame = camera.capture_array("main")
+            base = camera.capture_array("main")
         except KeyboardInterrupt:
             break
         except Exception as e:
@@ -261,7 +261,7 @@ def ReconnaissanceFacial(name):
         #             pasReconnu = False
         #             print(f"Face recognized: {name}")
 
-        cv2.imshow('OpenCV', frame)
+        cv2.imshow('OpenCV', base)
         
 
 
