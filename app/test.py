@@ -161,43 +161,38 @@ def prendsPhotos():
     camera.close()
     cv2.destroyAllWindows()
 
-    return fn_name
 
 
+def entrainementPhoto():
+     
+    size = 4
+    fn_haar = '../hash.xml'
+    fn_dir = 'Photos'
 
+     (images, lables, names, id) = ([], [], {}, 0)
+    for (subdirs, dirs, files) in os.walk(fn_dir):
+        for subdir in dirs:
+            names[id] = subdir
+            subjectpath = os.path.join(fn_dir, subdir)
+            for filename in os.listdir(subjectpath):
+                f_name, f_extension = os.path.splitext(filename)
+                if(f_extension.lower() not in ['.png','.jpg','.jpeg','.gif','.pgm']):
+                    continue
+                path = subjectpath + '/' + filename
+                lable = id
+                images.append(cv2.imread(path, 0))
+                lables.append(int(lable))
+            id += 1
+    (im_width, im_height) = (112, 92)
+    print(images)
+    # Create a Numpy array from the two lists above
+    (images, lables) = [numpy.array(lis) for lis in [images, lables]]
 
-def entrainementPhoto(data_folder, name):
-    # Initialize face recognizer
-    face_recognizer = cv2.face.LBPHFaceRecognizer_create()
+    model = cv2.face.LBPHFaceRecognizer_create()
+    model.train(images, lables)
 
-    # Get the paths of all images in the data folder
-    image_paths = [os.path.join(data_folder, f) for f in os.listdir(data_folder) if f.endswith('.jpg') or f.endswith('.png')]
-
-    # Create lists to store face samples and corresponding labels
-    face_samples = []
-    labels = []
-
-    # Read images and collect face samples and labels
-    for image_path in image_paths:
-        # Read the image
-        img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-
-        # Extract face and label from image path
-        label = int(os.path.split(image_path)[-1].split(".")[0])
-        face_samples.append(img)
-        labels.append(label)
-
-    # Convert lists to NumPy arrays
-    face_samples = np.asarray(face_samples, dtype=np.uint8)
-    labels = np.asarray(labels, dtype=np.int32)
-
-    # Train the face recognizer
-    face_recognizer.train(face_samples, labels)
-
-    # Save the trained model
-    face_recognizer.save("models/" + name + "_model.xml")
-
-    print("Training complete. Model saved as " + name + "_model.xml")
+    model.save("models/" + 'master' + "_model.xml")
+    print("Training complete. Model overrided as " + 'master' + "_model.xml")
 
 
 
@@ -254,8 +249,7 @@ def ReconnaissanceFacial(name):
 
             # Try to recognize the face
             if prediction[1] < 90:
-                cv2.putText(frame, f'{prediction[1]:.2f}', (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
-
+                cv2.putText(frame,'%s - %.0f' % (names[prediction[0]],prediction[1]),(x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
                 # if names[prediction[0]] == name:
                 #     retour = True
                 #     pasReconnu = False
@@ -280,24 +274,20 @@ def ReconnaissanceFacial(name):
 
 while True:
     print("1 = prendre photo")
-    print("2 = tester model")
+    print('2 = entrainer le model sur les photos')
+    print("3 = tester model")
 
-    choix = int(input("Choisissez une option (1, 2, etc.): "))
+    choix = int(input("Choisissez une option (1, 2, 3.): "))
 
     if choix == 1:
-        name = prendsPhotos()
-        print('photos prises, entrainement du model en cours')
-
-        cheminPhotos = 'Photos/' + name
-
-        entrainementPhoto(cheminPhotos, name)
-
-        break
+        prendsPhotos()
+        print('photos prises')
 
     elif choix == 2:
-        infirmiereNom = input("Donnez le nom de l'infirmière : ")
-        trained_model_file = infirmiereNom + '_model.xml'
+        print('entrainement du model sur toutes les dossier de Photos ')
+        entrainementPhoto()
 
+    elif choix == 3:
         ReconnaissanceFacial(infirmiereNom)
 
     else:
