@@ -217,7 +217,7 @@ def entrainementPhoto(data_folder, name):
 
 
 def ReconnaissanceFacial(name):
-    fn_haar = '../haarcascade_frontalface_default.xml'
+    fn_haar = '../hash.xml'
 
     # Create a dictionary to map label ids to names
     names = {}
