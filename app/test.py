@@ -196,7 +196,7 @@ def entrainementPhoto(data_folder, name):
         img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
         # Extract face and label from image path
-        label = int(os.path.split(image_path)[-1].split(".")[1])
+        label = int(os.path.split(image_path)[-1].split(".")[0])
         face_samples.append(img)
         labels.append(label)
 
