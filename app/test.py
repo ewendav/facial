@@ -58,75 +58,62 @@ def prendsPhotos():
     fn_dir = 'Photos'
     count_max = 30
 
-    try:
-        print("Identifiant de l'infirmière")
-        fn_name = input()
-        if len(fn_name) == 0:
-            print("Vous devez fournir un identifiant valide !")
-            sys.exit(0)
-        print("Nom du dossier des Photos, enter si 'Photos'")
-        fn_dir1 = input()
-        if len(fn_dir1) > 0:
-            fn_dir = fn_dir1
-        print("Nombre de photos, par défaut 30 enter si ok")
-        count_max1 = input()
-        if len(count_max1) > 0:
-            count_max = int(str(count_max1))
-    except:
-        print("Erreur de saisie !")
-        sys.exit(0)
+    # try:
+    #     print("Identifiant de l'infirmière")
+    #     fn_name = input()
+    #     if len(fn_name) == 0:
+    #         print("Vous devez fournir un identifiant valide !")
+    #         sys.exit(0)
+    #     print("Nom du dossier des Photos, enter si 'Photos'")
+    #     fn_dir1 = input()
+    #     if len(fn_dir1) > 0:
+    #         fn_dir = fn_dir1
+    #     print("Nombre de photos, par défaut 30 enter si ok")
+    #     count_max1 = input()
+    #     if len(count_max1) > 0:
+    #         count_max = int(str(count_max1))
+    # except:
+    #     print("Erreur de saisie !")
+    #     sys.exit(0)
 
-    path = os.path.join(fn_dir, fn_name)
-    if not os.path.isdir(path):
-        os.mkdir(path)
+    # path = os.path.join(fn_dir, fn_name)
+    # if not os.path.isdir(path):
+    #     os.mkdir(path)
 
     (im_width, im_height) = (112, 92)
     haar_cascade = cv2.CascadeClassifier(fn_haar)
 
     # Create the PiCamera2 object
     camera = Picamera2()
-    camera.resolution = (640, 480)
+    camera_config = camera.create_still_configuration(main={"size": (1920, 1080)}, lores={"size": (640, 480)}, display="lores")
+    camera.configure(camera_config)
 
     pin = sorted([int(n[:n.find('.')]) for n in os.listdir(path) if n[0] != '.'] + [0])[-1] + 1
 
     print("\n\033[94mLe programme va enregistrer " + str(count_max) + " photos. \
     Veuillez bouger la tête pour prendre des photos de face différenciées.\033[0m\n")
-    camera_config = camera.create_still_configuration(main={"size": (1920, 1080)}, lores={"size": (640, 480)}, display="lores")
-    camera.configure(camera_config)
+
 
     count = 0
     pause = 0
     camera.start()
+    time.sleep(2)
+
 
     while count < 30:
         frame = None
         try:
-            # Capture a frame
-            # camera.start_preview(Preview.QTGL)
-
-            # camera.start()
-            photo = camera.capture_array("main")
-
-
+            frame = camera.capture_array("main")
         except KeyboardInterrupt:
             break
         except Exception as e:
             print(f"Error capturing frame: {e}")
             continue
 
-        # Get the NumPy array representing the image
-        frame = photo
 
-        # Get image size
         height, width, channels = frame.shape
-
-        # Flip frame
         frame = cv2.flip(frame, 1, 0)
-
-        # Convert to grayscale
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-        # Scale down for speed
         mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
 
         # Detect faces
@@ -215,38 +202,43 @@ def entrainementPhoto(data_folder, name):
 
 
 def ReconnaissanceFacial(name):
+    size = 4
     fn_haar = '../hash.xml'
-
-    # Create a dictionary to map label ids to names
     names = {}
 
     # Load the pre-trained model
     model = cv2.face.LBPHFaceRecognizer_create()
     model.read('models/' + name + '_model.xml')  
+
+    (im_width, im_height) = (112, 92)
     haar_cascade = cv2.CascadeClassifier(fn_haar)
 
     camera = Picamera2()
-    camera.resolution = (640, 480)
     camera_config = camera.create_still_configuration(main={"size": (1920, 1080)}, lores={"size": (640, 480)}, display="lores")
     camera.configure(camera_config)
     camera.start()
+    time.sleep(2)
 
     pasReconnu = True
     retour = False
     
     while pasReconnu:
-        frame = camera.capture_array("main")
+        frame = None
 
-        # Convert RGB to BGR
-        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+        try:
+            frame = camera.capture_array("main")
+        except KeyboardInterrupt:
+            break
+        except Exception as e:
+            print(f"Error capturing frame: {e}")
+            continue
 
         height, width, channels = frame.shape
-        frame = np.flip(frame, axis=1)
+        frame = cv2.flip(frame, 1, 0)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        size = 4
         mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
 
-        # Detect faces and loop through each one
+        # Detect faces 
         faces = haar_cascade.detectMultiScale(mini)
 
         for i in range(len(faces)):
@@ -270,6 +262,8 @@ def ReconnaissanceFacial(name):
                     print(f"Face recognized: {name}")
 
         cv2.imshow('OpenCV', frame)
+
+
 
     camera.close()
     cv2.destroyAllWindows()
