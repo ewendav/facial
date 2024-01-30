@@ -210,7 +210,7 @@ def entrainementPhoto(data_folder, name):
     # Save the trained model
     face_recognizer.save(name + ".xml")
 
-    print("Training complete. Model saved as 'face_recognition_model.xml'")
+    print("Training complete. Model saved as " + name + ".xml")
 
 
 
@@ -259,10 +259,9 @@ while True:
     choix = int(input("Choisissez une option (1, 2, etc.): "))
 
     if choix == 1:
-        # name = prendsPhotos()
-        # print('photos prises, entrainement du model en cours')
+        name = prendsPhotos()
+        print('photos prises, entrainement du model en cours')
 
-        name = 'new'
 
         cheminPhotos = 'Photos/' + name
 
