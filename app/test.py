@@ -214,8 +214,6 @@ def entrainementPhoto(data_folder, name):
 
 
 
-
-
 def ReconnaissanceFacial(name):
     fn_haar = '../hash.xml'
 
@@ -224,7 +222,7 @@ def ReconnaissanceFacial(name):
 
     # Load the pre-trained model
     model = cv2.face.LBPHFaceRecognizer_create()
-    model.read( 'models/' + name +'_model.xml')  
+    model.read('models/' + name + '_model.xml')  
     haar_cascade = cv2.CascadeClassifier(fn_haar)
 
     camera = Picamera2()
@@ -237,8 +235,10 @@ def ReconnaissanceFacial(name):
     retour = False
     
     while pasReconnu:
-
         frame = camera.capture_array("main")
+
+        # Convert RGB to BGR
+        frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
 
         height, width, channels = frame.shape
         frame = np.flip(frame, axis=1)
@@ -250,32 +250,28 @@ def ReconnaissanceFacial(name):
         faces = haar_cascade.detectMultiScale(mini)
 
         for i in range(len(faces)):
+            face_i = faces[i]
 
-            if i:
+            # Coordinates of face after scaling back by `size`
+            (x, y, w, h) = [v * size for v in face_i]
+            face = gray[y:y + h, x:x + w]
+            face_resize = cv2.resize(face, (112, 92))  
 
-                face_i = faces[i]
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+            prediction = model.predict(face_resize)
 
-                # Coordinates of face after scaling back by `size`
-                (x, y, w, h) = [v * size for v in face_i]
-                face = gray[y:y + h, x:x + w]
-                face_resize = cv2.resize(face, (112, 92))  
-
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-                prediction = model.predict(face_resize)
-
-                # Try to recognize the face
-                if prediction[1] < 90:
-                    cv2.putText(frame, '%s - %.0f' % (names[prediction[0]], prediction[1]), (x - 10, y - 10),
-                                cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
-                    if names[prediction[0]] == name:
-                        retour = True
-                        pasReconnu = False
-                        print(f"Face recognized: {name}")
-
+            # Try to recognize the face
+            if prediction[1] < 90:
+                cv2.putText(frame, '%s - %.0f' % (names[prediction[0]], prediction[1]), (x - 10, y - 10),
+                            cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+                if names[prediction[0]] == name:
+                    retour = True
+                    pasReconnu = False
+                    print(f"Face recognized: {name}")
 
         cv2.imshow('OpenCV', frame)
 
-    camera.stop()
+    camera.close()
     cv2.destroyAllWindows()
 
     return retour
