@@ -240,16 +240,14 @@ def ReconnaissanceFacial(name):
     retour = False
     
     while pasReconnu:
-        camera.capture_file("temp.jpg")
 
-        frame = cv2.imread("temp.jpg")
+        try :
+            frame = camera.capture_array("main")
 
+        height, width, channels = frame.shape
         frame = np.flip(frame, axis=1)
-
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
-        # Resize to speed up detection (optional, change size above)
-        size = 2
+        size = 4
         mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
 
         # Detect faces and loop through each one
