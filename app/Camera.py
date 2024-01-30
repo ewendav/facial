@@ -11,7 +11,7 @@ class Camera :
 
     def prendsPhotos(self):
         size = 4
-        fn_haar = '../hash.xml'
+        fn_haar = '../assets/hash.xml'
         fn_dir = '../assets/photos'
         count_max = 30
 
@@ -125,7 +125,7 @@ class Camera :
     def entrainementPhoto(self):
         
         size = 4
-        fn_haar = '../hash.xml'
+        fn_haar = '../assets/hash.xml'
         fn_dir = '../assets/photos'
 
         (images, lables, names, id) = ([], [], {}, 0)
@@ -236,26 +236,3 @@ class Camera :
 
         return retour
 
-
-    # while True:
-    #     print("1 = prendre photo")
-    #     print('2 = entrainer le model sur les photos')
-    #     print("3 = tester model")
-
-    #     choix = int(input("Choisissez une option (1, 2, 3.): "))
-
-    #     if choix == 1:
-    #         prendsPhotos()
-    #         print('photos prises')
-    #         print('entrainement du model sur toutes les dossier de Photos ')
-    #         entrainementPhoto()
-
-    #     elif choix == 2:
-    #         print('entrainement du model sur toutes les dossier de Photos ')
-    #         entrainementPhoto()
-
-    #     elif choix == 3:
-    #         ReconnaissanceFacial()
-
-    #     else:
-    #         print('Option non reconnue. Essayez à nouveau.')
