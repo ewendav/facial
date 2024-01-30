@@ -212,7 +212,7 @@ class Camera :
                 # Try to recognize the face
                 if prediction[1] < 90:
                     cv2.putText(frame,'%s - %.0f' % (names[prediction[0]],prediction[1]),(x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
-                    if name !== '':
+                    if name != '':
                         if names[prediction[0]] == name:
                             retour = True
                             pasReconnu = False
@@ -226,8 +226,6 @@ class Camera :
             
             if key == 27:
                 break
-
-
 
         camera.close()
         cv2.destroyAllWindows()
