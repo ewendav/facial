@@ -47,13 +47,14 @@ from picamera2 import Picamera2
 import os
 import cv2
 import sys
+import time
 
 # sys.path.append('dependencies/picameraFolder/picamera')  
 
-from picamera2 import array
-from array import PiRGBArray
+
 
 def photoEntrainement():
+
 
     size = 4
     fn_haar = '../hash.xml'
@@ -85,13 +86,9 @@ def photoEntrainement():
     (im_width, im_height) = (112, 92)
     haar_cascade = cv2.CascadeClassifier(fn_haar)
 
-    # Create the PiCamera object
+    # Create the PiCamera2 object
     camera = PiCamera2()
     camera.resolution = (640, 480)
-    rawCapture = PiRGBArray(camera, size=(640, 480))
-
-    # Wait for the camera to warm up
-    time.sleep(0.1)
 
     pin = sorted([int(n[:n.find('.')]) for n in os.listdir(path) if n[0] != '.'] + [0])[-1] + 1
 
@@ -101,7 +98,7 @@ def photoEntrainement():
     count = 0
     pause = 0
 
-    for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+    for frame in camera.capture_continuous(format="bgr", use_video_port=True):
         # Get the NumPy array representing the image
         frame = frame.array
 
@@ -154,9 +151,6 @@ def photoEntrainement():
         cv2.imshow('OpenCV', frame)
         key = cv2.waitKey(1) & 0xFF
 
-        # Clear the stream for the next frame
-        rawCapture.truncate(0)
-
         # If the 'Esc' key is pressed, break from the loop
         if key == 27:
             break
@@ -164,6 +158,7 @@ def photoEntrainement():
     # Release the camera resources
     camera.close()
     cv2.destroyAllWindows()
+
 
 
 def recognize_faces(trained_model_file, frame):
