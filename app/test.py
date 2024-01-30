@@ -161,37 +161,12 @@ def prendsPhotos():
     camera.close()
     cv2.destroyAllWindows()
 
+    return fn_name
 
 
-def entrainementPhoto():
-     
-    size = 4
-    fn_haar = '../hash.xml'
-    fn_dir = 'Photos'
-
-     (images, lables, names, id) = ([], [], {}, 0)
-    for (subdirs, dirs, files) in os.walk(fn_dir):
-        for subdir in dirs:
-            names[id] = subdir
-            subjectpath = os.path.join(fn_dir, subdir)
-            for filename in os.listdir(subjectpath):
-                f_name, f_extension = os.path.splitext(filename)
-                if(f_extension.lower() not in ['.png','.jpg','.jpeg','.gif','.pgm']):
-                    continue
-                path = subjectpath + '/' + filename
-                lable = id
-                images.append(cv2.imread(path, 0))
-                lables.append(int(lable))
-            id += 1
-    (im_width, im_height) = (112, 92)
-    print(images)
-    # Create a Numpy array from the two lists above
-    (images, lables) = [numpy.array(lis) for lis in [images, lables]]
-
-    model = cv2.face.LBPHFaceRecognizer_create()
-    model.train(images, lables)
 
 
+def entrainementPhoto(data_folder, name):
     # Initialize face recognizer
     face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 
@@ -310,15 +285,22 @@ while True:
     choix = int(input("Choisissez une option (1, 2, 3.): "))
 
     if choix == 1:
-        prendsPhotos()
-        print('photos prises')
+        name = prendsPhotos()
+        print('photos prises, entrainement du model en cours')
+
+        cheminPhotos = 'Photos/' + name
 
     elif choix == 2:
-        print('entrainement du model sur toutes les dossier de Photos ')
-        entrainementPhoto()
+        infirmiereNom = input("Donnez le nom de l'infirmière : ")
+        trained_model_file = infirmiereNom + '_model.xml'
+
+        ReconnaissanceFacial(infirmiereNom)
 
     elif choix == 3:
-        ReconnaissanceFacial(infirmiereNom)
+            infirmiereNom = input("Donnez le nom de l'infirmière : ")
+            trained_model_file = infirmiereNom + '_model.xml'
+
+            ReconnaissanceFacial(infirmiereNom)
 
     else:
         print('Option non reconnue. Essayez à nouveau.')
