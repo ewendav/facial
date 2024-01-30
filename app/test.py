@@ -233,6 +233,9 @@ def ReconnaissanceFacial(name):
             print(f"Error capturing frame: {e}")
             continue
 
+        cv2.imshow('OpenCV', frame)
+
+
         height, width, channels = frame.shape
         frame = cv2.flip(frame, 1, 0)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -261,7 +264,6 @@ def ReconnaissanceFacial(name):
                     pasReconnu = False
                     print(f"Face recognized: {name}")
 
-        cv2.imshow('OpenCV', frame)
 
 
 
