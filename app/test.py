@@ -58,27 +58,27 @@ def prendsPhotos():
     fn_dir = 'Photos'
     count_max = 30
 
-    # try:
-    #     print("Identifiant de l'infirmière")
-    #     fn_name = input()
-    #     if len(fn_name) == 0:
-    #         print("Vous devez fournir un identifiant valide !")
-    #         sys.exit(0)
-    #     print("Nom du dossier des Photos, enter si 'Photos'")
-    #     fn_dir1 = input()
-    #     if len(fn_dir1) > 0:
-    #         fn_dir = fn_dir1
-    #     print("Nombre de photos, par défaut 30 enter si ok")
-    #     count_max1 = input()
-    #     if len(count_max1) > 0:
-    #         count_max = int(str(count_max1))
-    # except:
-    #     print("Erreur de saisie !")
-    #     sys.exit(0)
+    try:
+        print("Identifiant de l'infirmière")
+        fn_name = input()
+        if len(fn_name) == 0:
+            print("Vous devez fournir un identifiant valide !")
+            sys.exit(0)
+        print("Nom du dossier des Photos, enter si 'Photos'")
+        fn_dir1 = input()
+        if len(fn_dir1) > 0:
+            fn_dir = fn_dir1
+        print("Nombre de photos, par défaut 30 enter si ok")
+        count_max1 = input()
+        if len(count_max1) > 0:
+            count_max = int(str(count_max1))
+    except:
+        print("Erreur de saisie !")
+        sys.exit(0)
 
-    # path = os.path.join(fn_dir, fn_name)
-    # if not os.path.isdir(path):
-    #     os.mkdir(path)
+    path = os.path.join(fn_dir, fn_name)
+    if not os.path.isdir(path):
+        os.mkdir(path)
 
     (im_width, im_height) = (112, 92)
     haar_cascade = cv2.CascadeClassifier(fn_haar)
@@ -207,8 +207,8 @@ def ReconnaissanceFacial(name):
     names = {}
 
     # Load the pre-trained model
-    model = cv2.face.LBPHFaceRecognizer_create()
-    model.read('models/' + name + '_model.xml')  
+    # model = cv2.face.LBPHFaceRecognizer_create()
+    # model.read('models/' + name + '_model.xml')  
 
     (im_width, im_height) = (112, 92)
     haar_cascade = cv2.CascadeClassifier(fn_haar)
@@ -226,20 +226,20 @@ def ReconnaissanceFacial(name):
         frame = None
 
         try:
-            base = camera.capture_array("main")
+            frame = camera.capture_array("main")
         except KeyboardInterrupt:
             break
         except Exception as e:
             print(f"Error capturing frame: {e}")
             continue
 
-        height, width, channels = base.shape
-        frame = cv2.flip(base, 1, 0)
+        height, width, channels = frame.shape
+        frame = cv2.flip(frame, 1, 0)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
 
         # # Detect faces 
-        # faces = haar_cascade.detectMultiScale(mini)
+        faces = haar_cascade.detectMultiScale(mini)
 
         # for i in range(len(faces)):
         #     face_i = faces[i]
@@ -261,8 +261,11 @@ def ReconnaissanceFacial(name):
         #             pasReconnu = False
         #             print(f"Face recognized: {name}")
 
-        cv2.imshow('OpenCV', base)
+        cv2.imshow('OpenCV', frame)
+        key = cv2.waitKey(1) & 0xFF
         
+        if key == 27:
+            break
 
 
     camera.close()
