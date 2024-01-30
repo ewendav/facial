@@ -52,7 +52,7 @@ import time
 # sys.path.append('dependencies/picameraFolder/picamera')  
 
 
-def photoEntrainement():
+def prendsPhotos():
     size = 4
     fn_haar = '../hash.xml'
     fn_dir = 'Photos'
@@ -98,14 +98,13 @@ def photoEntrainement():
     pause = 0
     camera.start()
 
-    while True:
+    while count < count_max1:
         frame = None
         try:
             # Capture a frame
             # camera.start_preview(Preview.QTGL)
 
             # camera.start()
-            time.sleep(1)
             photo = camera.capture_array("main")
 
 
@@ -175,6 +174,46 @@ def photoEntrainement():
     camera.close()
     cv2.destroyAllWindows()
 
+    return fn_name
+
+
+
+
+def entrainementPhoto(data_folder, name):
+    # Initialize face recognizer
+    face_recognizer = cv2.face.LBPHFaceRecognizer_create()
+
+    # Get the paths of all images in the data folder
+    image_paths = [os.path.join(data_folder, f) for f in os.listdir(data_folder) if f.endswith('.jpg') or f.endswith('.png')]
+
+    # Create lists to store face samples and corresponding labels
+    face_samples = []
+    labels = []
+
+    # Read images and collect face samples and labels
+    for image_path in image_paths:
+        # Read the image
+        img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
+        # Extract face and label from image path
+        label = int(os.path.split(image_path)[-1].split(".")[1])
+        face_samples.append(img)
+        labels.append(label)
+
+    # Convert lists to NumPy arrays
+    face_samples = np.asarray(face_samples, dtype=np.uint8)
+    labels = np.asarray(labels, dtype=np.int32)
+
+    # Train the face recognizer
+    face_recognizer.train(face_samples, labels)
+
+    # Save the trained model
+    face_recognizer.save(name + ".xml")
+
+    print("Training complete. Model saved as 'face_recognition_model.xml'")
+
+
+
 
 
 
@@ -220,7 +259,13 @@ while True:
     choix = int(input("Choisissez une option (1, 2, etc.): "))
 
     if choix == 1:
-        photoEntrainement()
+        name = prendsPhotos()
+        print('photos prises, entrainement du model en cours')
+
+        cheminPhotos = '/Photos/' + name
+
+        entrainementPhoto(cheminPhotos, name)
+
         break
 
     elif choix == 2:
