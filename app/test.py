@@ -202,9 +202,9 @@ def ReconnaissanceFacial():
     folder_path = 'Photos'
     names = {}
 
-    subdirectories = [d for d in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, d))]
-    for label, subdir in enumerate(subdirectories):
-        names[label] = subdir
+    # subdirectories = [d for d in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, d))]
+    # for label, subdir in enumerate(subdirectories):
+    #     names[label] = subdir
     
 
     model = cv2.face.LBPHFaceRecognizer_create()
