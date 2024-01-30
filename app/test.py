@@ -196,7 +196,7 @@ def entrainementPhoto():
 
 
 
-def ReconnaissanceFacial(name):
+def ReconnaissanceFacial():
     size = 4
     fn_haar = '../hash.xml'
     names = {}
@@ -288,7 +288,7 @@ while True:
         entrainementPhoto()
 
     elif choix == 3:
-        ReconnaissanceFacial(infirmiereNom)
+        ReconnaissanceFacial()
 
     else:
         print('Option non reconnue. Essayez à nouveau.')
