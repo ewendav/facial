@@ -9,7 +9,7 @@ import time
 
 class Camera : 
 
-    def prendsPhotos():
+    def prendsPhotos(self):
         size = 4
         fn_haar = '../hash.xml'
         fn_dir = '../assets/Photos'
@@ -120,7 +120,7 @@ class Camera :
 
 
 
-    def entrainementPhoto():
+    def entrainementPhoto(self):
         
         size = 4
         fn_haar = '../hash.xml'
@@ -153,7 +153,7 @@ class Camera :
 
 
 
-    def ReconnaissanceFacial(name = ''):
+    def ReconnaissanceFacial(self, name = ''):
         size = 4
         fn_haar = '../assets/hash.xml'
         folder_path = '../assets/Photos'
