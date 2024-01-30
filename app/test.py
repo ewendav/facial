@@ -102,9 +102,12 @@ def photoEntrainement():
             camera_config = camera.create_still_configuration(main={"size": (1920, 1080)}, lores={"size": (640, 480)}, display="lores")
             camera.configure(camera_config)
             camera.start_preview(Preview.QTGL)
+
             camera.start()
-            time.sleep(2)
-            frame = camera.capture_file("test.jpg")
+            time.sleep(1)
+            photo = camera.capture_array("main")
+
+
         except KeyboardInterrupt:
             break
         except Exception as e:
@@ -112,7 +115,7 @@ def photoEntrainement():
             continue
 
         # Get the NumPy array representing the image
-        frame = frame.array
+        frame = photo
 
         # Get image size
         height, width, channels = frame.shape
