@@ -44,86 +44,123 @@
 import cv2
 import numpy as np
 from picamera2 import Picamera2
+import os
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+import cv2
+import sys
 
 def photoEntrainement(output_xml_file):
-    # Initialize three empty lists: one for captured images, one for labels, and one for label IDs
-    (images, labels, label_id) = ([], [], 0)
 
-    # Create a LBPH (Local Binary Patterns Histograms) face recognition model
-    model = cv2.face.LBPHFaceRecognizer_create()
-
-    # Load the Haar Cascade classifier for face detection
-    face_cascade = cv2.CascadeClassifier('../hash.xml')
-
-    # Create an instance of the Picamera2 class for capturing images
-    picam2 = Picamera2()
-
-    # Configure the preview settings for the camera (size, format, alignment)
-    picam2.preview_configuration.main.size = (50, 50)
-    picam2.preview_configuration.main.format = "BGR888"
-    picam2.preview_configuration.align()
-    picam2.configure("preview")
-
-    # Start capturing images
-    picam2.start()
-
-    # Specify the number of images to capture for training
-    images_to_capture = 100
-    images_captured = 0
+    size = 4
+    fn_haar = '../hash.xml'
+    fn_dir = 'Photos'
+    count_max = 30
 
     try:
-        # Continue capturing images until the desired number is reached
-        while images_captured < images_to_capture:
-            # Capture a single frame from the camera
-            frame = picam2.capture_array()
+        print("Identifiant de l'infirmière")
+        fn_name = input()
+        if len(fn_name) == 0:
+            print("Vous devez fournir un identifiant valide !")
+            sys.exit(0)
+        print("Nom du dossier des Photos, enter si 'Photos'")
+        fn_dir1 = input()
+        if len(fn_dir1) > 0:
+            fn_dir = fn_dir1
+        print("Nombre de photos, par défaut 30 enter si ok")
+        count_max1 = input()
+        if len(count_max1) > 0:
+            count_max = int(str(count_max1))
+    except:
+        print("Erreur de saisie !")
+        sys.exit(0)
 
-            # Convert the frame to grayscale
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    path = os.path.join(fn_dir, fn_name)
+    if not os.path.isdir(path):
+        os.mkdir(path)
 
-            # Detect faces in the grayscale frame
-            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
+    (im_width, im_height) = (112, 92)
+    haar_cascade = cv2.CascadeClassifier(fn_haar)
 
-            # Iterate over detected faces
-            for (x, y, w, h) in faces:
-                # Extract the face region from the grayscale frame
-                face_region = gray[y:y+h, x:x+w]
+    # Create the PiCamera object
+    camera = PiCamera()
+    camera.resolution = (640, 480)
+    rawCapture = PiRGBArray(camera, size=(640, 480))
 
-                # Resize the face region to a standard size (120x120)
-                face_region_resized = cv2.resize(face_region, (120, 120))
+    # Wait for the camera to warm up
+    time.sleep(0.1)
 
-                # Display the captured face region
-                cv2.imshow('Captured Face', face_region_resized)
+    pin = sorted([int(n[:n.find('.')]) for n in os.listdir(path) if n[0] != '.'] + [0])[-1] + 1
 
-                # Append the resized face region to the images list
-                images.append(face_region_resized)
+    print("\n\033[94mLe programme va enregistrer " + str(count_max) + " photos. \
+    Veuillez bouger la tête pour prendre des photos de face différenciées.\033[0m\n")
 
-                # Append the label ID to the labels list
-                labels.append(label_id)
+    count = 0
+    pause = 0
 
-                # Increment the count of captured images
-                images_captured += 1
+    for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+        # Get the NumPy array representing the image
+        frame = frame.array
 
-            # Break the loop if 'q' is pressed
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+        # Get image size
+        height, width, channels = frame.shape
 
-            # Print the number of images captured
-            print('images captured : ' + str(images_captured))
+        # Flip frame
+        frame = cv2.flip(frame, 1, 0)
 
-    finally:
-        # Close OpenCV windows and stop the camera when the loop is exited
-        cv2.destroyAllWindows()
-        picam2.stop()
-        picam2.close()
+        # Convert to grayscale
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    # Convert lists to NumPy arrays
-    (images, labels) = [np.array(lis) for lis in [images, labels]]
+        # Scale down for speed
+        mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
 
-    # Train the face recognition model with the captured images and labels
-    model.train(images, labels)
+        # Detect faces
+        faces = haar_cascade.detectMultiScale(mini)
 
-    # Save the trained model to an XML file
-    model.save(output_xml_file)
+        # We only consider the largest face
+        faces = sorted(faces, key=lambda x: x[3])
+        if faces:
+            face_i = faces[0]
+            (x, y, w, h) = [v * size for v in face_i]
+
+            face = gray[y:y + h, x:x + w]
+            face_resize = cv2.resize(face, (im_width, im_height))
+
+            # Draw a rectangle and write the identifier
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+            cv2.putText(frame, fn_name, (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+
+            # Do not consider faces that are too small
+            if (w * 6 < width or h * 6 < height):
+                print("Face trop petite")
+            else:
+                # To create diversity, only save every fifth detected image
+                if (pause == 0):
+                    print("Sauvegarde de la photo " + str(count + 1) + "/" + str(count_max))
+
+                    # Save image file
+                    cv2.imwrite('%s/%s.png' % (path, pin), face_resize)
+
+                    pin += 1
+                    count += 1
+                    pause = 1
+
+        if (pause > 0):
+            pause = (pause + 1) % 5
+
+        cv2.imshow('OpenCV', frame)
+        key = cv2.waitKey(1) & 0xFF
+
+        # Clear the stream for the next frame
+        rawCapture.truncate(0)
+
+        # If the 'Esc' key is pressed, break from the loop
+        if key == 27:
+            break
+
+    # Release the camera resources
+    camera.close()
+    cv2.destroyAllWindows()
 
 
 def recognize_faces(trained_model_file, frame):
@@ -159,10 +196,10 @@ def recognize_faces(trained_model_file, frame):
 
     return frame
 
-
-print("1 = prendre photo")
-print("2 = tester model")
 while True:
+    print("1 = prendre photo")
+    print("2 = tester model")
+
     choix = int(input("Choisissez une option (1, 2, etc.): "))
 
     if choix == 1:
