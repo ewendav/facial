@@ -96,6 +96,7 @@ def photoEntrainement():
 
     count = 0
     pause = 0
+    camera.start()
 
     while True:
         frame = None
