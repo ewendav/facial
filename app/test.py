@@ -99,7 +99,7 @@ def photoEntrainement():
         frame = None
         try:
             # Capture a frame
-            frame = camera.capture(format="bgr", use_video_port=True)
+            frame = camera.capture_file("test.jpg")
         except KeyboardInterrupt:
             break
         except Exception as e:
