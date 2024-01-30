@@ -226,15 +226,22 @@ def ReconnaissanceFacial(name):
     # Load the pre-trained model
     model = cv2.face.LBPHFaceRecognizer_create()
     model.read( 'models/' + name +'_model.xml')  
-
     haar_cascade = cv2.CascadeClassifier(fn_haar)
-    cam = cv2.VideoCapture(0)
+
+    camera = Picamera2()
+    camera.resolution = (640, 480)
+    camera_config = camera.create_still_configuration(main={"size": (1920, 1080)}, lores={"size": (640, 480)}, display="lores")
+    camera.configure(camera_config)
+
+    camera.preview_configuration.main.format = "RGB888"
+    camera.preview_configuration.align()
+    camera.start()
 
     pasReconnu = True
     retour = False
-
+    
     while pasReconnu:
-        ret, frame = cam.read()
+        frame = camera.capture_array()
 
         # Flip the image (optional)
         frame = cv2.flip(frame, 1, 0)
@@ -269,7 +276,7 @@ def ReconnaissanceFacial(name):
 
         cv2.imshow('OpenCV', frame)
 
-    cam.release()
+    camera.stop()
     cv2.destroyAllWindows()
 
     return retour
