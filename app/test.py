@@ -50,10 +50,10 @@ import sys
 
 # sys.path.append('dependencies/picameraFolder/picamera')  
 
-from picamera import array
+from picamera2 import array
 from array import PiRGBArray
 
-def photoEntrainement(output_xml_file):
+def photoEntrainement():
 
     size = 4
     fn_haar = '../hash.xml'
@@ -206,9 +206,7 @@ while True:
     choix = int(input("Choisissez une option (1, 2, etc.): "))
 
     if choix == 1:
-        infirmiereNom = input("Donnez le nom de l'infirmière : ")
-        output_xml_file = infirmiereNom + '_model.xml'
-        photoEntrainement(output_xml_file)
+        photoEntrainement()
         break
 
     elif choix == 2:
