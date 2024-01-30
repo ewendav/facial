@@ -9,7 +9,7 @@ import time
 
 def prendsPhotos():
     size = 4
-    fn_haar = '../hash.xml'
+    fn_haar = '../assets/hash.xml'
     fn_dir = '../assets/photos'
     count_max = 30
 
@@ -121,7 +121,7 @@ def prendsPhotos():
 def entrainementPhoto():
     
     size = 4
-    fn_haar = '../hash.xml'
+    fn_haar = '../assets/hash.xml'
     fn_dir = '../assets/photos'
 
     (images, lables, names, id) = ([], [], {}, 0)
