@@ -91,6 +91,8 @@ def photoEntrainement():
 
     print("\n\033[94mLe programme va enregistrer " + str(count_max) + " photos. \
     Veuillez bouger la tête pour prendre des photos de face différenciées.\033[0m\n")
+    camera_config = camera.create_still_configuration(main={"size": (1920, 1080)}, lores={"size": (640, 480)}, display="lores")
+    camera.configure(camera_config)
 
     count = 0
     pause = 0
@@ -99,8 +101,6 @@ def photoEntrainement():
         frame = None
         try:
             # Capture a frame
-            camera_config = camera.create_still_configuration(main={"size": (1920, 1080)}, lores={"size": (640, 480)}, display="lores")
-            camera.configure(camera_config)
             camera.start_preview(Preview.QTGL)
 
             camera.start()
