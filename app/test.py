@@ -233,25 +233,25 @@ def ReconnaissanceFacial(name = ''):
     return retour
 
 
-    while True:
-        print("1 = prendre photo")
-        print('2 = entrainer le model sur les photos')
-        print("3 = tester model")
+while True:
+    print("1 = prendre photo")
+    print('2 = entrainer le model sur les photos')
+    print("3 = tester model")
 
-        choix = int(input("Choisissez une option (1, 2, 3.): "))
+    choix = int(input("Choisissez une option (1, 2, 3.): "))
 
-        if choix == 1:
-            prendsPhotos()
-            print('photos prises')
-            print('entrainement du model sur toutes les dossier de Photos ')
-            entrainementPhoto()
+    if choix == 1:
+        prendsPhotos()
+        print('photos prises')
+        print('entrainement du model sur toutes les dossier de Photos ')
+        entrainementPhoto()
 
-        elif choix == 2:
-            print('entrainement du model sur toutes les dossier de Photos ')
-            entrainementPhoto()
+    elif choix == 2:
+        print('entrainement du model sur toutes les dossier de Photos ')
+        entrainementPhoto()
 
-        elif choix == 3:
-            ReconnaissanceFacial()
+    elif choix == 3:
+        ReconnaissanceFacial()
 
-        else:
-            print('Option non reconnue. Essayez à nouveau.')
+    else:
+        print('Option non reconnue. Essayez à nouveau.')
