@@ -259,10 +259,12 @@ while True:
     choix = int(input("Choisissez une option (1, 2, etc.): "))
 
     if choix == 1:
-        name = prendsPhotos()
-        print('photos prises, entrainement du model en cours')
+        # name = prendsPhotos()
+        # print('photos prises, entrainement du model en cours')
 
-        cheminPhotos = '/Photos/' + name
+        name = 'new'
+
+        cheminPhotos = 'Photos/' + name
 
         entrainementPhoto(cheminPhotos, name)
 
