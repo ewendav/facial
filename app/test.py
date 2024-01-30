@@ -241,25 +241,25 @@ def ReconnaissanceFacial(name):
         # # Detect faces 
         faces = haar_cascade.detectMultiScale(mini)
 
-        # for i in range(len(faces)):
-        #     face_i = faces[i]
+        for i in range(len(faces)):
+            face_i = faces[i]
 
-        #     # Coordinates of face after scaling back by `size`
-        #     (x, y, w, h) = [v * size for v in face_i]
-        #     face = gray[y:y + h, x:x + w]
-        #     face_resize = cv2.resize(face, (112, 92))  
+            # Coordinates of face after scaling back by `size`
+            (x, y, w, h) = [v * size for v in face_i]
+            face = gray[y:y + h, x:x + w]
+            face_resize = cv2.resize(face, (112, 92))  
 
-        #     cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-        #     prediction = model.predict(face_resize)
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+            prediction = model.predict(face_resize)
 
-        #     # Try to recognize the face
-        #     if prediction[1] < 90:
-        #         cv2.putText(frame, f'{prediction[1]:.2f}', (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+            # Try to recognize the face
+            if prediction[1] < 90:
+                cv2.putText(frame, f'{prediction[1]:.2f}', (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
 
-        #         if names[prediction[0]] == name:
-        #             retour = True
-        #             pasReconnu = False
-        #             print(f"Face recognized: {name}")
+                if names[prediction[0]] == name:
+                    retour = True
+                    pasReconnu = False
+                    print(f"Face recognized: {name}")
 
         cv2.imshow('OpenCV', frame)
         key = cv2.waitKey(1) & 0xFF
