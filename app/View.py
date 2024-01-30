@@ -108,8 +108,8 @@ class View:
         result = self.camera.ReconnaissanceFacial(self.username)
 
         if result:   
-            self.destroy_widgets()          
             messagebox.showinfo("LOGIN SUCCESFULL","LOGIN SUCCESFULL")
+            self.destroy_widgets()          
             self.microBit(True)
              
 
