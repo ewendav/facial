@@ -186,7 +186,7 @@ def entrainementPhoto():
     (im_width, im_height) = (112, 92)
     print(images)
     # Create a Numpy array from the two lists above
-    (images, lables) = [numpy.array(lis) for lis in [images, lables]]
+    (images, lables) = [np.array(lis) for lis in [images, lables]]
 
     model = cv2.face.LBPHFaceRecognizer_create()
     model.train(images, lables)
