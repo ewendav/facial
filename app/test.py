@@ -1,6 +1,6 @@
 from Camera import Camera
 
-camera = new Camera()
+camera = Camera()
 
 while True:
     print("1 = prendre photo")
