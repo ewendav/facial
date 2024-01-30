@@ -195,9 +195,9 @@ def entrainementPhoto(data_folder, name):
     face_recognizer.train(face_samples, labels)
 
     # Save the trained model
-    face_recognizer.save("models/" + 'master' + "_model.xml")
+    face_recognizer.save("models/" + name + "_model.xml")
 
-    print("Training complete. Model saved as " + 'master' + "_model.xml")
+    print("Training complete. Model saved as " + name + "_model.xml")
 
 
 
@@ -254,7 +254,8 @@ def ReconnaissanceFacial(name):
 
             # Try to recognize the face
             if prediction[1] < 90:
-                cv2.putText(frame,'%s - %.0f' % (names[prediction[0]],prediction[1]),(x-10, y-10), cv2.FONT_HERSHEY_PLAIN,1,(0, 255, 0))
+                cv2.putText(frame, f'{prediction[1]:.2f}', (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+
                 # if names[prediction[0]] == name:
                 #     retour = True
                 #     pasReconnu = False
@@ -279,10 +280,9 @@ def ReconnaissanceFacial(name):
 
 while True:
     print("1 = prendre photo")
-    print('2 = entrainer le model sur les photos')
-    print("3 = tester model")
+    print("2 = tester model")
 
-    choix = int(input("Choisissez une option (1, 2, 3.): "))
+    choix = int(input("Choisissez une option (1, 2, etc.): "))
 
     if choix == 1:
         name = prendsPhotos()
@@ -290,17 +290,15 @@ while True:
 
         cheminPhotos = 'Photos/' + name
 
+        entrainementPhoto(cheminPhotos, name)
+
+        break
+
     elif choix == 2:
         infirmiereNom = input("Donnez le nom de l'infirmière : ")
         trained_model_file = infirmiereNom + '_model.xml'
 
         ReconnaissanceFacial(infirmiereNom)
-
-    elif choix == 3:
-            infirmiereNom = input("Donnez le nom de l'infirmière : ")
-            trained_model_file = infirmiereNom + '_model.xml'
-
-            ReconnaissanceFacial(infirmiereNom)
 
     else:
         print('Option non reconnue. Essayez à nouveau.')
