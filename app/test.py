@@ -101,9 +101,9 @@ def photoEntrainement():
         frame = None
         try:
             # Capture a frame
-            camera.start_preview(Preview.QTGL)
+            # camera.start_preview(Preview.QTGL)
 
-            camera.start()
+            # camera.start()
             time.sleep(1)
             photo = camera.capture_array("main")
 
