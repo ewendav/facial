@@ -84,7 +84,7 @@ def photoEntrainement():
     haar_cascade = cv2.CascadeClassifier(fn_haar)
 
     # Create the PiCamera2 object
-    camera = PiCamera2()
+    camera = Picamera2()
     camera.resolution = (640, 480)
 
     pin = sorted([int(n[:n.find('.')]) for n in os.listdir(path) if n[0] != '.'] + [0])[-1] + 1
