@@ -10,7 +10,7 @@ import time
 def prendsPhotos():
     size = 4
     fn_haar = '../hash.xml'
-    fn_dir = '../assets/Photos'
+    fn_dir = '../assets/photos'
     count_max = 30
 
     try:
@@ -122,7 +122,7 @@ def entrainementPhoto():
     
     size = 4
     fn_haar = '../hash.xml'
-    fn_dir = '../assets/Photos'
+    fn_dir = '../assets/photos'
 
     (images, lables, names, id) = ([], [], {}, 0)
     for (subdirs, dirs, files) in os.walk(fn_dir):
@@ -154,7 +154,7 @@ def entrainementPhoto():
 def ReconnaissanceFacial(name = ''):
     size = 4
     fn_haar = '../assets/hash.xml'
-    folder_path = '../assets/Photos'
+    folder_path = '../assets/photos'
     names = {}
 
     subdirectories = [d for d in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, d))]
