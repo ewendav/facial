@@ -199,7 +199,7 @@ def entrainementPhoto():
 def ReconnaissanceFacial():
     size = 4
     fn_haar = '../hash.xml'
-    foler_path = 'Photos'
+    folder_path = 'Photos'
     names = {}
 
     subdirectories = [d for d in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, d))]
