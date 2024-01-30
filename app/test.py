@@ -169,7 +169,7 @@ def entrainementPhoto():
     fn_haar = '../hash.xml'
     fn_dir = 'Photos'
 
-     (images, lables, names, id) = ([], [], {}, 0)
+    (images, lables, names, id) = ([], [], {}, 0)
     for (subdirs, dirs, files) in os.walk(fn_dir):
         for subdir in dirs:
             names[id] = subdir
