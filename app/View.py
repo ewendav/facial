@@ -110,7 +110,7 @@ class View:
         if result:   
             self.destroy_widgets()          
             messagebox.showinfo("LOGIN SUCCESFULL","LOGIN SUCCESFULL")
-            self.microBit(true);
+            self.microBit(True)
              
 
 
