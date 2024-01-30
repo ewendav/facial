@@ -1,4 +1,4 @@
-import Camera from Camera
+from Camera import Camera
 
 camera = new Camera()
 
