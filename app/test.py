@@ -4,17 +4,17 @@
 # # Load the pre-trained Haar Cascade classifier for face detection
 # face_cascade = cv2.CascadeClassifier('../hash.xml')
 
-# picam2 = Picamera2()
-# picam2.preview_configuration.main.size = (1280, 720)
-# picam2.preview_configuration.main.format = "RGB888"
-# picam2.preview_configuration.align()
-# picam2.configure("preview")
-# picam2.start()
+# camera = Picamera2()
+# camera.preview_configuration.main.size = (1280, 720)
+# camera.preview_configuration.main.format = "RGB888"
+# camera.preview_configuration.align()
+# camera.configure("preview")
+# camera.start()
 
 # try:
 #     while True:
 #         # Capture the camera image
-#         im = picam2.capture_array()
+#         im = camera.capture_array()
 
 #         # Convert the image to grayscale for face detection
 #         gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
@@ -36,8 +36,8 @@
 # finally:
 #     # Release resources
 #     cv2.destroyAllWindows()
-#     picam2.stop()
-#     picam2.close()
+#     camera.stop()
+#     camera.close()
 
 
 
@@ -99,6 +99,11 @@ def photoEntrainement():
         frame = None
         try:
             # Capture a frame
+            camera_config = camera.create_still_configuration(main={"size": (1920, 1080)}, lores={"size": (640, 480)}, display="lores")
+            camera.configure(camera_config)
+            camera.start_preview(Preview.QTGL)
+            camera.start()
+            time.sleep(2)
             frame = camera.capture_file("test.jpg")
         except KeyboardInterrupt:
             break
@@ -218,17 +223,17 @@ while True:
         infirmiereNom = input("Donnez le nom de l'infirmière : ")
         trained_model_file = infirmiereNom + '_model.xml'
 
-        picam2 = Picamera2()
-        picam2.preview_configuration.main.size = (1280, 720)
-        picam2.preview_configuration.main.format = "RGB888"
-        picam2.preview_configuration.align()
-        picam2.configure("preview")
-        picam2.start()
+        camera = Picamera2()
+        camera.preview_configuration.main.size = (1280, 720)
+        camera.preview_configuration.main.format = "RGB888"
+        camera.preview_configuration.align()
+        camera.configure("preview")
+        camera.start()
 
         try:
             while True:
                 # Capture the camera image
-                im = picam2.capture_array()
+                im = camera.capture_array()
 
                 # Perform face recognition on the captured frame
                 im_with_recognition = recognize_faces(trained_model_file, im)
@@ -243,8 +248,8 @@ while True:
         finally:
             # Release resources
             cv2.destroyAllWindows()
-            picam2.stop()
-            picam2.close()
+            camera.stop()
+            camera.close()
             break
 
     else:
