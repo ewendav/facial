@@ -6,7 +6,7 @@ from Model import Model
 from Camera import Camera
 import RPi.GPIO as GPIO
 from dependencies.MFRC522_python.mfrc522.SimpleMFRC522 import SimpleMFRC522
-from Microbit import *
+import microbit
 
 class View:
     def __init__(self):
