@@ -256,10 +256,7 @@ def ReconnaissanceFacial():
                 #     print(f"Face recognized: {name}")
 
         cv2.imshow('OpenCV', frame)
-        key = cv2.waitKey(1) & 0xFF
-        
-        if key == 27:
-            break
+
 
 
     camera.close()
