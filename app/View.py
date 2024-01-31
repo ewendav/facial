@@ -5,7 +5,6 @@ from Model import Model
 from Camera import Camera
 import RPi.GPIO as GPIO
 from dependencies.MFRC522_python.mfrc522.SimpleMFRC522 import SimpleMFRC522
-import microbit
 
 class View:
     def __init__(self):
@@ -38,24 +37,7 @@ class View:
     # 
     # METHODES vues
     # 
-            
-    def microBit(self, result):
-        patterns = [
-            "10000",
-            "01000",
-            "00100",
-            "00010",
-            "00001",
-        ]
-        if result:
-            microbit.display.set_pixel(col, patterns.index(pattern), 9)  # Set the pixel to maximum brightness
-            microbit.sleep(5000)
-            microbit.display.clear()
-        else:
-            microbit.display.set_pixel(col, patterns.index(pattern), 9)  # Set the pixel to maximum brightness
-            microbit.sleep(5000)
-            microbit.display.clear()
-             
+ 
 
     def destroy_widgets(self):
         for widget in self.root.winfo_children():
@@ -116,7 +98,7 @@ class View:
         if result:   
             messagebox.showinfo("LOGIN SUCCESFULL","LOGIN SUCCESFULL")
             self.destroy_widgets()          
-            self.microBit(True)
+            self.model.microBit(True)
              
 
 
