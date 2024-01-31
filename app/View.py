@@ -87,13 +87,13 @@ class View:
         # rfid_label.pack(pady=10)
 
         # # recup l'id du badge et check via l'api si il est bon
-        try:
+        # try:
         #     reader = SimpleMFRC522()
         #     rfid_prompt_window.update_idletasks()
         #     rfid_prompt_window.update()
 
         #     self.idBadge, text = reader.read()
-            self.check_badge()
+        self.check_badge()
            
 
         except Exception as e:
