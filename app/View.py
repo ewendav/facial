@@ -23,20 +23,20 @@ class View:
         if self.model.check_credentials(self.username, password) :
             self.start_rfid_scanning()
         else : 
-            messagebox.showinfo("Login failled", "wrong username or password" )
             self.microBit(False)
+            messagebox.showinfo("Login failled", "wrong username or password" )
 
 
     def check_badge(self):
 
         # if self.model.check_badge(self.idBadge, self.username) :
+            # self.microBit(True)
         #     messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(self.idBadge))
             self.afterPreLogin() 
-            self.microBit(True)
 
         # else:
+            # self.microBit(False)
         #     messagebox.showerror("RFID Scan Failed", "you don't have the right card")
-            self.microBit(False)
             
 
 
@@ -112,13 +112,13 @@ class View:
         result = self.camera.ReconnaissanceFacial(self.username)
 
         if result:   
+            self.microBit(True)
             messagebox.showinfo("LOGIN SUCCESFULL","LOGIN SUCCESFULL")
             self.destroy_widgets()          
-            self.microBit(True)
         else:
+            self.microBit(False)
             messagebox.showinfo("LOGIN FAILED","LOGIN FAILED")
             self.destroy_widgets()          
-            self.microBit(False)
              
 
 
