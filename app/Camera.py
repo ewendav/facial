@@ -193,7 +193,7 @@ class Camera :
 
             height, width, channels = frame.shape
             frame = cv2.flip(frame, 1, 0)
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
             mini = cv2.resize(gray, (int(gray.shape[1] / size), int(gray.shape[0] / size)))
 
             # # Detect faces 
@@ -218,6 +218,10 @@ class Camera :
                             retour = True
                             pasReconnu = False
                             print(f"Face recognized: {name}")
+                        else:
+                            print(f"Wrong face recognized: {name}")
+                            pasReconnu = False
+
                     
             cv2.namedWindow('facial recognition', cv2.WINDOW_NORMAL)
             cv2.resizeWindow('facial recognition', 500, 500)  

@@ -24,14 +24,19 @@ class View:
             self.start_rfid_scanning()
         else : 
             messagebox.showinfo("Login failled", "wrong username or password" )
+            self.microBit(False)
+
 
     def check_badge(self):
 
         # if self.model.check_badge(self.idBadge, self.username) :
         #     messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(self.idBadge))
             self.afterPreLogin() 
+            self.microBit(True)
+
         # else:
         #     messagebox.showerror("RFID Scan Failed", "you don't have the right card")
+            self.microBit(False)
             
 
 
@@ -52,6 +57,7 @@ class View:
     def destroy_widgets(self):
         for widget in self.root.winfo_children():
             widget.destroy()
+        self.root.update()
 
     def loginStart(self):        
         # créer fenetre principalle
@@ -109,6 +115,10 @@ class View:
             messagebox.showinfo("LOGIN SUCCESFULL","LOGIN SUCCESFULL")
             self.destroy_widgets()          
             self.microBit(True)
+        else:
+            messagebox.showinfo("LOGIN FAILED","LOGIN FAILED")
+            self.destroy_widgets()          
+            self.microBit(False)
              
 
 
