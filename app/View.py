@@ -112,11 +112,11 @@ class View:
 
         if result:   
             self.microBit(True)
-            messagebox.showinfo("LOGIN SUCCESFULL","LOGIN SUCCESFULL")
+            messagebox.showinfo("FACE RECO SUCCESFULL","FACE RECO SUCCESFULL")
             self.destroy_widgets()          
         else:
             self.microBit(False)
-            messagebox.showinfo("LOGIN FAILED","LOGIN FAILED")
+            messagebox.showinfo("FACE RECO FAILED","FACE RECO FAILED")
              
 
 
