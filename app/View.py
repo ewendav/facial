@@ -45,8 +45,8 @@ class View:
             microbit.sleep(400)
 
         else:
-            microbit.sleep(5000)
-            microbit.display.clear()
+            microbit.display.show(microbit.Image.NO)
+            microbit.sleep(400)
              
 
     def destroy_widgets(self):
