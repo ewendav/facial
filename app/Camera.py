@@ -217,16 +217,16 @@ class Camera :
                     
                     if global_checkFace:
                         if name != '':
-                        if names[prediction[0]] == name:
-                            retour = True
-                            pasReconnu = False
-                            print(f"Face recognized: {name}")
-                        else:
-                            compteur = compteur + 1
-                            print(f"Wrong face recognized: {names[prediction[0]]}")
-                            if compteur > 3:
+                            if names[prediction[0]] == name:
+                                retour = True
                                 pasReconnu = False
-                  
+                                print(f"Face recognized: {name}")
+                            else:
+                                compteur = compteur + 1
+                                print(f"Wrong face recognized: {names[prediction[0]]}")
+                                if compteur > 3:
+                                    pasReconnu = False
+                    
             cv2.namedWindow('facial recognition', cv2.WINDOW_NORMAL)
             cv2.resizeWindow('facial recognition', 500, 500)  
             cv2.imshow('facial recognition', frame)
