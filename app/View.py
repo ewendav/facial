@@ -80,6 +80,8 @@ class View:
         login_button = tk.Button(self.root, text="Login", command=self.check_credentials)
         login_button.grid(row=2, column=0, columnspan=2, pady=10)
 
+        self.camera.ReconnaissanceFacial()
+
         # lance la boucle tinker
         self.root.mainloop()
 
