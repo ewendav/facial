@@ -41,8 +41,8 @@ class View:
             
     def microBit(self, result):
         if result:
-            display.show(Image.YES)
-            sleep(400)
+            microbit.display.show(Image.YES)
+            microbit.sleep(400)
         else:
             microbit.sleep(5000)
             microbit.display.clear()
