@@ -209,30 +209,34 @@ class Camera :
 
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
                 prediction = model.predict(face_resize)
+                compteur = 0
 
                 # Try to recognize the face
                 if prediction[1] < 90:
                     cv2.putText(frame,'%s - %.0f' % (names[prediction[0]],prediction[1]),(x-10, y-10), cv2.FONT_HERSHEY_PLAIN,4,(0, 255, 0),thickness=4)
-                    if name != '':
+                    
+                    if global_checkFace:
+                        if name != '':
                         if names[prediction[0]] == name:
                             retour = True
                             pasReconnu = False
                             print(f"Face recognized: {name}")
                         else:
-                            print(f"Wrong face recognized: {name}")
-                            pasReconnu = False
-
-                    
+                            compteur = compteur + 1
+                            print(f"Wrong face recognized: {names[prediction[0]]}")
+                            if compteur > 3:
+                                pasReconnu = False
+                  
             cv2.namedWindow('facial recognition', cv2.WINDOW_NORMAL)
             cv2.resizeWindow('facial recognition', 500, 500)  
             cv2.imshow('facial recognition', frame)
 
-            key = cv2.waitKey(1)
-            if key != -1:
-                key = key & 0xFF
+            # key = cv2.waitKey(1)
+            # if key != -1:
+            #     key = key & 0xFF
             
-            if key == 27:
-                break
+            # if key == 27:
+            #     break
 
         camera.close()
         cv2.destroyAllWindows()
