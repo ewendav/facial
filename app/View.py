@@ -42,13 +42,13 @@ class View:
             
     def microBit(self, result):
         if result:
-            display.show(Image.YES)
-            sleep(5000)
-            display.clear()
+            microbit.display.show(Image.YES)
+            microbit.sleep(5000)
+            microbit.display.clear()
         else:
-            display.show(Image.NO)
-            sleep(5000)
-            display.clear()
+            microbit.display.show(Image.NO)
+            microbit.sleep(5000)
+            microbit.display.clear()
              
 
     def destroy_widgets(self):
