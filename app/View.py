@@ -6,7 +6,7 @@ from Model import Model
 from Camera import Camera
 import RPi.GPIO as GPIO
 from dependencies.MFRC522_python.mfrc522.SimpleMFRC522 import SimpleMFRC522
-import microbit
+# import microbit
 
 class View:
     def __init__(self):
@@ -40,15 +40,15 @@ class View:
     # METHODES vues
     # 
             
-    # def microBit(self, result):
-    #     if result:
-    #         microbit.display.show(Image.YES)
-    #         microbit.sleep(5000)
-    #         microbit.display.clear()
-    #     else:
-    #         microbit.display.show(Image.NO)
-    #         microbit.sleep(5000)
-    #         microbit.display.clear()
+    def microBit(self, result):
+        if result:
+            microbit.display.show(Image.YES)
+            microbit.sleep(5000)
+            microbit.display.clear()
+        else:
+            microbit.display.show(Image.NO)
+            microbit.sleep(5000)
+            microbit.display.clear()
              
 
     def destroy_widgets(self):
