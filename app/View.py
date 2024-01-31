@@ -5,6 +5,7 @@ from Model import Model
 from Camera import Camera
 import RPi.GPIO as GPIO
 from dependencies.MFRC522_python.mfrc522.SimpleMFRC522 import SimpleMFRC522
+import microbit
 
 class View:
     def __init__(self):
@@ -37,7 +38,15 @@ class View:
     # 
     # METHODES vues
     # 
- 
+            
+    def microBit(self, result):
+        if result:
+            microbit.sleep(5000)
+            microbit.display.clear()
+        else:
+            microbit.sleep(5000)
+            microbit.display.clear()
+             
 
     def destroy_widgets(self):
         for widget in self.root.winfo_children():
@@ -75,17 +84,17 @@ class View:
         # rfid_label.pack(pady=10)
 
         # # recup l'id du badge et check via l'api si il est bon
-        # try:
+        try:
         #     reader = SimpleMFRC522()
         #     rfid_prompt_window.update_idletasks()
         #     rfid_prompt_window.update()
 
         #     self.idBadge, text = reader.read()
-        self.check_badge()
+            self.check_badge()
            
 
-        # except Exception as e:
-        #     messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
+        except Exception as e:
+            messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
         # finally:
         #     rfid_prompt_window.destroy()
 
@@ -98,7 +107,7 @@ class View:
         if result:   
             messagebox.showinfo("LOGIN SUCCESFULL","LOGIN SUCCESFULL")
             self.destroy_widgets()          
-            self.model.microBit(True)
+            self.microBit(True)
              
 
 
