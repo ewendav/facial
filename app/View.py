@@ -96,8 +96,8 @@ class View:
         self.check_badge()
            
 
-        except Exception as e:
-            messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
+        # except Exception as e:
+        #     messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
         # finally:
         #     rfid_prompt_window.destroy()
 
