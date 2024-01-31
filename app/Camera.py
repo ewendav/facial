@@ -179,6 +179,7 @@ class Camera :
 
         pasReconnu = True
         retour = False
+        start_time = ''
         
         while pasReconnu:
             frame = None
@@ -210,9 +211,20 @@ class Camera :
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
                 prediction = model.predict(face_resize)
 
+                if start_time == '':
+                    start_time = time.time() 
+
+
+                elapsed_time = time.time() - start_time
+
+                if elapsed_time > 10:
+                    pasReconnu = False
+
+
+
+
                 # Try to recognize the face
                 if prediction[1] < 90:
-                    cv2.putText(frame,'%s - %.0f' % (names[prediction[0]],prediction[1]),(x-10, y-10), cv2.FONT_HERSHEY_PLAIN,4,(0, 255, 0),thickness=4)
                     if name != '':
                         if names[prediction[0]] == name:
                             retour = True
@@ -220,8 +232,8 @@ class Camera :
                             print(f"Face recognized: {name}")
                         else:
                             print(f"Wrong face recognized: {names[prediction[0]]}")
-                            pasReconnu = False
-                            cv2.putText(frame,'%s - %.0f' % (names[prediction[0]],prediction[1]),(x-10, y-10), cv2.FONT_HERSHEY_PLAIN,4,(0, 255, 0),thickness=4)
+                            cv2.putText(frame, '%s - %.0f' % (names[prediction[0]], prediction[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN, 4, (0, 0, 255), thickness=4)
+
 
 
                     
