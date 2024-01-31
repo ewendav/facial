@@ -108,7 +108,6 @@ class View:
 
 
     def afterPreLogin(self):
-        self.destroy_widgets()
         result = self.camera.ReconnaissanceFacial(self.username)
 
         if result:   
@@ -118,7 +117,6 @@ class View:
         else:
             self.microBit(False)
             messagebox.showinfo("LOGIN FAILED","LOGIN FAILED")
-            result = self.camera.ReconnaissanceFacial(self.username)
              
 
 
