@@ -1,8 +1,6 @@
 import sqlite3
 import requests
 import json
-import microbit
-
 
 class Model:
     def __init__(self):
@@ -24,26 +22,6 @@ class Model:
         self.connection.commit()
         cursor.close()
 
-
-
-            
-    def microBit(self, result):
-        patterns = [
-            "10000",
-            "01000",
-            "00100",
-            "00010",
-            "00001",
-        ]
-        if result:
-            microbit.display.set_pixel(col, patterns.index(pattern), 9)  # Set the pixel to maximum brightness
-            microbit.sleep(5000)
-            microbit.display.clear()
-        else:
-            microbit.display.set_pixel(col, patterns.index(pattern), 9)  # Set the pixel to maximum brightness
-            microbit.sleep(5000)
-            microbit.display.clear()
-            
 
 
     def insertLog(self,numEtape, login, commentaire, numBadge):
