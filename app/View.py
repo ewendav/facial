@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from PIL import Image, ImageTk
+from PIL import ImageTk
 import cv2
 from Model import Model
 from Camera import Camera
@@ -41,12 +41,19 @@ class View:
     # 
             
     def microBit(self, result):
+        patterns = [
+            "10000",
+            "01000",
+            "00100",
+            "00010",
+            "00001",
+        ]
         if result:
-            microbit.display.show(Image.YES)
+            microbit.display.set_pixel(col, patterns.index(pattern), 9)  # Set the pixel to maximum brightness
             microbit.sleep(5000)
             microbit.display.clear()
         else:
-            microbit.display.show(Image.NO)
+            microbit.display.set_pixel(col, patterns.index(pattern), 9)  # Set the pixel to maximum brightness
             microbit.sleep(5000)
             microbit.display.clear()
              
@@ -114,12 +121,12 @@ class View:
              
 
 
-    def update(self):
-        ret, frame = self.vid.read()
-        if ret:
-            self.photo = ImageTk.PhotoImage(image=Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
-            self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
-        self.root.after(10, self.update)
+    # def update(self):
+    #     ret, frame = self.vid.read()
+    #     if ret:
+    #         self.photo = ImageTk.PhotoImage(image=Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)))
+    #         self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
+    #     self.root.after(10, self.update)
             
 
         
