@@ -80,8 +80,6 @@ class View:
         login_button = tk.Button(self.root, text="Login", command=self.check_credentials)
         login_button.grid(row=2, column=0, columnspan=2, pady=10)
 
-        self.camera.ReconnaissanceFacial()
-
         # lance la boucle tinker
         self.root.mainloop()
 
@@ -110,15 +108,17 @@ class View:
 
 
     def afterPreLogin(self):
-        global_checkFace = true
+        self.destroy_widgets()
         result = self.camera.ReconnaissanceFacial(self.username)
 
         if result:   
             self.microBit(True)
             messagebox.showinfo("LOGIN SUCCESFULL","LOGIN SUCCESFULL")
+            self.destroy_widgets()          
         else:
             self.microBit(False)
             messagebox.showinfo("LOGIN FAILED","LOGIN FAILED")
+            result = self.camera.ReconnaissanceFacial(self.username)
              
 
 
