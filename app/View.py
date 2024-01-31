@@ -40,15 +40,15 @@ class View:
     # METHODES vues
     # 
             
-    def microBit(self, result):
-        if result:
-            microbit.display.show(Image.YES)
-            microbit.sleep(5000)
-            microbit.display.clear()
-        else:
-            microbit.display.show(Image.NO)
-            microbit.sleep(5000)
-            microbit.display.clear()
+    # def microBit(self, result):
+    #     if result:
+    #         microbit.display.show(Image.YES)
+    #         microbit.sleep(5000)
+    #         microbit.display.clear()
+    #     else:
+    #         microbit.display.show(Image.NO)
+    #         microbit.sleep(5000)
+    #         microbit.display.clear()
              
 
     def destroy_widgets(self):
@@ -87,7 +87,7 @@ class View:
         # rfid_label.pack(pady=10)
 
         # # recup l'id du badge et check via l'api si il est bon
-        # try:
+        try:
         #     reader = SimpleMFRC522()
         #     rfid_prompt_window.update_idletasks()
         #     rfid_prompt_window.update()
@@ -96,8 +96,8 @@ class View:
             self.check_badge()
            
 
-        # except Exception as e:
-        #     messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
+        except Exception as e:
+            messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
         # finally:
         #     rfid_prompt_window.destroy()
 

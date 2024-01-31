@@ -3,7 +3,6 @@ import cv2
 import numpy as np
 from picamera2 import Picamera2, Preview
 import os
-import cv2
 import sys
 import time
 
