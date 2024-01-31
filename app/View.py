@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import messagebox
-from PIL import ImageTk
 import cv2
 from Model import Model
 from Camera import Camera
