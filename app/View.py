@@ -41,17 +41,8 @@ class View:
             
     def microBit(self, result):
         if result:
-            swastika_pattern = "00300:" \
-                   "03630:" \
-                   "36963:" \
-                   "03630:" \
-                   "00300"
-
-            # Convert the pattern to a MicroPython Image object
-            swastika_image = microbit.Image(swastika_pattern)
-
-            # Display the swastika
-            microbit.display.show(swastika_image)
+            microbit.sdisplay.show(microbit.Image.YES)
+            microbit.sleep(400)
 
         else:
             microbit.sleep(5000)
