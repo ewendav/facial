@@ -113,7 +113,6 @@ class View:
         if result:   
             self.microBit(True)
             messagebox.showinfo("FACE RECO SUCCESFULL","FACE RECO SUCCESFULL")
-            self.destroy_widgets()          
         else:
             self.microBit(False)
             messagebox.showinfo("FACE RECO FAILED","FACE RECO FAILED")
