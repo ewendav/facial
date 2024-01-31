@@ -41,8 +41,11 @@ class View:
             
     def microBit(self, result):
         if result:
-            microbit.display.show(microbit.Image.YES)
-            microbit.sleep(400)
+            microbit.display.show(microbit.Image('00300:'
+                       '03630:'
+                       '36963:'
+                       '03630:'
+                       '00300'))
         else:
             microbit.sleep(5000)
             microbit.display.clear()
