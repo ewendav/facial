@@ -118,7 +118,7 @@ class View:
         else:
             self.microBit(False)
             messagebox.showinfo("LOGIN FAILED","LOGIN FAILED")
-            self.destroy_widgets()          
+            result = self.camera.ReconnaissanceFacial(self.username)
              
 
 
