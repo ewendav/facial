@@ -79,9 +79,9 @@ class Model:
 
                 dataResponse = json.loads(responseText)
 
-                print(dataResponse)
+                print(dataResponse.get('status', True), 'oeor')
 
-                if dataResponse.get('status', True) is True:
+                if dataResponse.get('status', True) == 'true':
                     self.insertLog(2,username, 'lecture badge succes', idBadge)
                     vRetour = True
                 else : 
