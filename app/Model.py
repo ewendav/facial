@@ -68,7 +68,6 @@ class Model:
         vRetour = False
         print(idBadge)
 
-        print(f'https://www.btssio-carcouet.fr/ppe4/public/badge/{username}/{id}')
         print(username)
         
         response = requests.get(f'https://www.btssio-carcouet.fr/ppe4/public/badge/{username}/{str(idBadge)}')
@@ -82,7 +81,7 @@ class Model:
 
                 print(dataResponse)
 
-                if dataResponse.get('status', True):
+                if dataResponse.get('status', True) is True:
                     self.insertLog(2,username, 'lecture badge succes', idBadge)
                     vRetour = True
                 else : 

@@ -22,6 +22,7 @@ class View:
 
         if self.model.check_credentials(self.username, password) :
             self.start_rfid_scanning()
+            self.microBit(True)
         else : 
             self.microBit(False)
             messagebox.showinfo("Login failled", "wrong username or password" )
