@@ -80,19 +80,18 @@ class Model:
 
                 dataResponse = json.loads(responseText)
 
-                print(dataResponse.get('status', False))
+                print(dataResponse)
 
-                if dataResponse.get('status', False):
-                    self.insertLog(2,username, 'lecture badge succes', None)
-                    print(dataResponse)
+                if dataResponse.get('status', True):
+                    self.insertLog(2,username, 'lecture badge succes', idBadge)
                     vRetour = True
                 else : 
-                    self.insertLog(2,username, 'wrong badge', None)
+                    self.insertLog(2,username, 'wrong badge', idBadge)
             else : 
-                self.insertLog(2,username, 'error code response : ' + response.status_code, None)
+                self.insertLog(2,username, 'error code response : ' + response.status_code, idBadge)
             
         except Exception as e:
-            self.insertLog(1,username, 'error exception', None)
+            self.insertLog(1,username, 'error exception', idBadge)
 
         return vRetour
 

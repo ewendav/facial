@@ -97,7 +97,6 @@ class View:
 
             self.idBadge, text = reader.read()
             self.check_badge()
-           
 
         except Exception as e:
             messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
