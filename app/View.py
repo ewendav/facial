@@ -29,14 +29,14 @@ class View:
 
     def check_badge(self):
 
-        # if self.model.check_badge(self.idBadge, self.username) :
-            # self.microBit(True)
-        #     messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(self.idBadge))
+        if self.model.check_badge(self.idBadge, self.username) :
+            self.microBit(True)
+            messagebox.showinfo("RFID Scan Successful", "Card ID: " + str(self.idBadge))
             self.afterPreLogin() 
 
-        # else:
-            # self.microBit(False)
-        #     messagebox.showerror("RFID Scan Failed", "you don't have the right card")
+        else:
+            self.microBit(False)
+            messagebox.showerror("RFID Scan Failed", "you don't have the right card")
             
 
 
@@ -52,7 +52,6 @@ class View:
         else:
             microbit.display.show(microbit.Image.NO)
             microbit.sleep(400)
-             
 
     def destroy_widgets(self):
         for widget in self.root.winfo_children():
@@ -84,26 +83,26 @@ class View:
         self.root.mainloop()
 
     def start_rfid_scanning(self):
-        # rfid_prompt_window = tk.Toplevel()
-        # rfid_prompt_window.title("RFID Scanning Prompt")
+        rfid_prompt_window = tk.Toplevel()
+        rfid_prompt_window.title("RFID Scanning Prompt")
 
-        # rfid_label = tk.Label(rfid_prompt_window, text="Hold an RFID card near the reader.")
-        # rfid_label.pack(pady=10)
+        rfid_label = tk.Label(rfid_prompt_window, text="Hold an RFID card near the reader.")
+        rfid_label.pack(pady=10)
 
-        # # recup l'id du badge et check via l'api si il est bon
+        # recup l'id du badge et check via l'api si il est bon
         try:
-        #     reader = SimpleMFRC522()
-        #     rfid_prompt_window.update_idletasks()
-        #     rfid_prompt_window.update()
+            reader = SimpleMFRC522()
+            rfid_prompt_window.update_idletasks()
+            rfid_prompt_window.update()
 
-        #     self.idBadge, text = reader.read()
+            self.idBadge, text = reader.read()
             self.check_badge()
            
 
         except Exception as e:
             messagebox.showerror("RFID Scan Error", "Error during RFID scan: " + str(e))
         # finally:
-        #     rfid_prompt_window.destroy()
+            rfid_prompt_window.destroy()
 
 
 
